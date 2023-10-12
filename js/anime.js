@@ -38,7 +38,7 @@ async function RefreshLazyLoader() {
 
 // Function to get anime info
 async function getAnimeInfo(anime_id) {
-    data = (await getJson(infoapi + anime_id));
+    data = await getJson(infoapi + anime_id);
 
     document.documentElement.innerHTML = document.documentElement.innerHTML
         .replaceAll("TITLE", data["title"])
@@ -52,14 +52,16 @@ async function getAnimeInfo(anime_id) {
         .replaceAll("YEAR", data["releaseDate"])
         .replaceAll("STATUS", data["status"])
         .replaceAll("GENERES", getGenreHtml(data["genres"]));
-}
 
+    document.getElementById("main-content").style.display = "block";
+    document.getElementById("load").style.display = "none";
+}
 
 //Running functions
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
-getAnimeInfo(urlParams.get('anime')).then((data) => {
+getAnimeInfo(urlParams.get("anime")).then((data) => {
     RefreshLazyLoader();
     console.log("Anime Info loaded");
 });
