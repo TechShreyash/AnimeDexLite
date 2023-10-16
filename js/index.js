@@ -1,9 +1,9 @@
 // Api urls
 
-const trendingapi = "https://api.consumet.org/meta/anilist/trending?perPage=10";
-const popularapi = "https://api.consumet.org/anime/gogoanime/top-airing";
+const trendingapi = "https://consumet-api-x1lz.onrender.com/meta/anilist/trending?perPage=10";
+const popularapi = "https://consumet-api-x1lz.onrender.com/anime/gogoanime/top-airing";
 const recentapi =
-    "https://api.consumet.org/anime/gogoanime/recent-episodes?page=";
+    "https://consumet-api-x1lz.onrender.com/anime/gogoanime/recent-episodes?page=";
 
 // Usefull functions
 
