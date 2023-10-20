@@ -1,11 +1,11 @@
 // Api urls
 
-const infoapi = "https://api.consumet.org/anime/gogoanime/info/";
+const infoapi = "https://api.techzbots.live/anime/gogoanime/info/";
 const epapi = "https://api.techzbots1.workers.dev/gogo/episodes/";
-const searchapi = "https://api.consumet.org/meta/anilist/";
+const searchapi = "https://api.techzbots.live/meta/anilist/";
 const anilistinfoapi =
-    "https://api.consumet.org/meta/anilist/info/";
-const gogosearchapi = "https://api.consumet.org/anime/gogoanime/";
+    "https://api.techzbots.live/meta/anilist/info/";
+const gogosearchapi = "https://api.techzbots.live/anime/gogoanime/";
 
 // Usefull functions
 

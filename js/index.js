@@ -1,11 +1,11 @@
 // Api urls
 
 const trendingapi =
-    "https://api.consumet.org/meta/anilist/trending?perPage=10";
+    "https://api.techzbots.live/meta/anilist/trending?perPage=10";
 const popularapi =
-    "https://api.consumet.org/anime/gogoanime/top-airing";
+    "https://api.techzbots.live/anime/gogoanime/top-airing";
 const recentapi =
-    "https://api.consumet.org/anime/gogoanime/recent-episodes?page=";
+    "https://api.techzbots.live/anime/gogoanime/recent-episodes?page=";
 
 // Usefull functions
 
