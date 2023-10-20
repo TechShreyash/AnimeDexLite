@@ -1,9 +1,11 @@
 // Api urls
 
-const trendingapi = "https://consumet-api-x1lz.onrender.com/meta/anilist/trending?perPage=10";
-const popularapi = "https://consumet-api-x1lz.onrender.com/anime/gogoanime/top-airing";
+const trendingapi =
+    "https://api.consumet.org/meta/anilist/trending?perPage=10";
+const popularapi =
+    "https://api.consumet.org/anime/gogoanime/top-airing";
 const recentapi =
-    "https://consumet-api-x1lz.onrender.com/anime/gogoanime/recent-episodes?page=";
+    "https://api.consumet.org/anime/gogoanime/recent-episodes?page=";
 
 // Usefull functions
 
@@ -22,7 +24,7 @@ function genresToString(genres) {
 
 // Adding slider animes (trending animes from anilist)
 async function getTrendingAnimes() {
-    data = (await getJson(trendingapi))["results"];
+    const data = (await getJson(trendingapi))["results"];
     let SLIDER_HTML = "";
 
     for (let pos = 0; pos < data.length; pos++) {
@@ -51,7 +53,7 @@ async function getTrendingAnimes() {
 
 // Adding popular animes (popular animes from gogoanime)
 async function getPopularAnimes() {
-    data = (await getJson(popularapi))["results"];
+    const data = (await getJson(popularapi))["results"];
     let POPULAR_HTML = "";
 
     for (let pos = 0; pos < data.length; pos++) {
@@ -70,7 +72,7 @@ async function getPopularAnimes() {
 }
 // Adding popular animes (popular animes from gogoanime)
 async function getRecentAnimes(page = 1) {
-    data = (await getJson(recentapi + page))["results"];
+    const data = (await getJson(recentapi + page))["results"];
     let RECENT_HTML = "";
 
     for (let pos = 0; pos < data.length; pos++) {

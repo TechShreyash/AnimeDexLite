@@ -1,10 +1,11 @@
 // Api urls
 
-const infoapi = "https://consumet-api-x1lz.onrender.com/anime/gogoanime/info/";
+const infoapi = "https://api.consumet.org/anime/gogoanime/info/";
 const epapi = "https://api.techzbots1.workers.dev/gogo/episodes/";
-const searchapi = "https://consumet-api-x1lz.onrender.com/meta/anilist/";
-const anilistinfoapi = "https://consumet-api-x1lz.onrender.com/meta/anilist/info/";
-const gogosearchapi = "https://consumet-api-x1lz.onrender.com/anime/gogoanime/";
+const searchapi = "https://api.consumet.org/meta/anilist/";
+const anilistinfoapi =
+    "https://api.consumet.org/meta/anilist/info/";
+const gogosearchapi = "https://api.consumet.org/anime/gogoanime/";
 
 // Usefull functions
 
@@ -71,7 +72,7 @@ function getAnilistOtherTitle(title, current) {
 // Function to get anime info
 async function getAnimeInfo(anime_id) {
     try {
-        let data = await getJson(infoapi + anime_id);
+        const data = await getJson(infoapi + anime_id);
 
         document.documentElement.innerHTML = document.documentElement.innerHTML
             .replaceAll("TITLE", data["title"])
@@ -184,9 +185,8 @@ async function getEpList(anime_id) {
     let ephtml = "";
 
     for (let i = 0; i < total; i++) {
-        ephtml += `<a class="ep-btn" href="/episode?anime=${anime_id}&ep=${
-            i + 1
-        }">${i + 1}</a>`;
+        ephtml += `<a class="ep-btn" href="/episode.html?anime=${anime_id}&episode=${i + 1
+            }">${i + 1}</a>`;
     }
     document.getElementById("ephtmldiv").innerHTML = ephtml;
 }
