@@ -1,5 +1,5 @@
-const streamapi = "https://api.techzbots.live/anime/gogoanime/watch/";
-const serversapi = "https://api.techzbots.live/anime/gogoanime/servers/";
+const streamapi = "https://techzapi2.vercel.app/anime/gogoanime/watch/";
+const serversapi = "https://techzapi2.vercel.app/anime/gogoanime/servers/";
 const epapi = "https://api.techzbots1.workers.dev/gogo/episodes/";
 
 async function getJson(url) {
