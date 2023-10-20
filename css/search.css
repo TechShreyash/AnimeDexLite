@@ -6,6 +6,7 @@
 #load img {
     width: 5%;
     min-width: 35px;
+    border: none;
 }
 
 html,
@@ -63,11 +64,6 @@ footer a {
     color: white;
 }
 
-h1 {
-    color: #eb3349;
-    font-family: "Poppins", sans-serif;
-}
-
 i {
     margin: auto;
     margin-right: 10px;
@@ -120,50 +116,6 @@ div {
     display: block;
 }
 
-#background {
-    box-sizing: border-box;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    overflow: hidden;
-    height: 100%;
-    display: block;
-}
-
-#overview1 {
-    max-height: 150px;
-    overflow: auto;
-    display: block;
-}
-
-#overview3 {
-    max-height: 150px;
-    overflow: auto;
-    display: none;
-}
-
-#overview2 {
-    margin-bottom: 4px;
-    display: block;
-}
-
-#cover {
-    box-sizing: border-box;
-    position: absolute;
-    top: -20px;
-    left: -20px;
-    right: -20px;
-    bottom: -20px;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    filter: blur(20px);
-    opacity: 0.35;
-    background-attachment: scroll;
-}
-
 .poster {
     box-sizing: border-box;
     text-align: center;
@@ -172,29 +124,6 @@ div {
     margin: 0px;
     overflow: visible;
     margin-top: 20px;
-}
-
-.details {
-    width: auto;
-    text-align: left;
-    box-sizing: border-box;
-    display: inline;
-    margin: 0px;
-    overflow: visible;
-    padding-bottom: 20px;
-}
-
-.anime {
-    position: relative;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    text-align: center;
-    box-sizing: border-box;
-    width: 100%;
-    overflow: visible;
-    height: fit-content;
 }
 
 section img {
@@ -206,205 +135,7 @@ section img {
     margin: auto;
 }
 
-h1 {
-    font-family: "Montserrat", sans-serif;
-    font-size: 40px;
-    color: white;
-    font-weight: 700;
-    margin: 0px;
-    width: 100%;
-    text-align: center;
-    font-size: 24px;
-    text-align: center;
-    line-height: 1.2em;
-}
-
-.mid {
-    width: 100%;
-    text-align: center;
-}
-
-.cbox {
-    border: 1px #6d6d6d solid;
-    color: #dfdfdf;
-    font-family: "Roboto", sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    padding: 2px 4px;
-    border-radius: 4px;
-}
-
-.dot {
-    box-sizing: border-box;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    display: inline-block;
-    margin: 3px 6px;
-}
-
-.year {
-    color: #dfdfdf;
-    font-family: "Montserrat", sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    padding: 2px 4px;
-}
-
-.watch-btn {
-    background: #ed3832;
-    color: black;
-    border-radius: 4px;
-    font-weight: 400;
-    font-family: "Montserrat", sans-serif;
-    padding: 10px 20px;
-    text-decoration: none;
-}
-
-.synopsis {
-    color: white;
-    line-height: 1.5em;
-    font-family: "Montserrat", sans-serif;
-    font-size: 13px;
-    font-weight: 300;
-    text-align: left;
-    display: none;
-}
-
-#info {
-    display: inline;
-    margin: 0px;
-    text-align: left;
-    vertical-align: middle;
-    background: rgba(0, 0, 0, 0.2);
-    height: 100%;
-    padding: 20px 10px;
-}
-
-.item-head {
-    text-align: left;
-    font-family: "Montserrat", sans-serif;
-    color: #fff;
-    -webkit-text-size-adjust: none;
-    line-height: 1.4em;
-    font-size: 13px;
-    box-sizing: border-box;
-    font-weight: 600;
-    margin-bottom: 10px;
-    margin-right: 5px;
-}
-
-.item-des {
-    text-align: left;
-    font-family: "Montserrat", sans-serif;
-    color: #fff;
-    font-weight: 100;
-    -webkit-text-size-adjust: none;
-    line-height: 1.4em;
-    font-size: 13px;
-    box-sizing: border-box;
-}
-
-.info-items {
-    margin: 10px;
-}
-
-.genre {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 10px 0px;
-}
-
-.genre a {
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-sizing: border-box;
-    border-radius: 20px;
-    color: white;
-    font-family: "Montserrat", sans-serif;
-    font-size: 13px;
-    font-weight: 300;
-    padding: 4px 8px;
-    text-decoration: none;
-    margin: 4px 2px;
-    display: inline-block;
-    width: fit-content;
-}
-
-.col-3 {
-    width: 25%;
-}
-
-.col-6 {
-    width: 50%;
-}
-
-[class*="col-"] {
-    float: left;
-}
-
-.row::after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
-#watchh {
-    margin: 30px 0px 20px 0px;
-}
-
-[class*="col-"] {
-    width: 100%;
-}
-
 @media only screen and (min-width: 600px) {
-    .details {
-        width: calc(100% - 250px);
-    }
-
-    h1 {
-        font-size: 28px;
-    }
-
-    .item-des,
-    .item-head,
-    .genre a {
-        font-size: 15px;
-    }
-
-    h1 {
-        text-align: left;
-        font-weight: 700;
-        font-size: 30px;
-    }
-
-    .details {
-        padding-top: 20px;
-    }
-
-    .mid {
-        text-align: left;
-    }
-
-    #watchh {
-        margin: 50px 0px;
-    }
-
-    .overview {
-        display: none;
-    }
-
-    .synopsis,
-    #overview3 {
-        display: block;
-    }
-
-    .item-des,
-    .item-head,
-    .genre a {
-        font-size: 13px;
-    }
-
     section img {
         box-sizing: border-box;
         height: fit-content;
@@ -443,59 +174,6 @@ h1 {
 }
 
 @media only screen and (min-width: 1200px) {
-    .col-3 {
-        width: 25%;
-    }
-
-    .col-6 {
-        width: 50%;
-    }
-
-    h1 {
-        text-align: left;
-        font-weight: 700;
-        font-size: 30px;
-    }
-
-    .details {
-        padding-top: 40px;
-    }
-
-    .mid {
-        text-align: left;
-    }
-
-    #watchh {
-        margin: 50px 0px;
-    }
-
-    .overview {
-        display: none;
-    }
-
-    .synopsis,
-    #overview3 {
-        display: block;
-    }
-
-    .item-des,
-    .item-head,
-    .genre a {
-        font-size: 13px;
-    }
-
-    #info {
-        display: block;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(255, 255, 255, 0.1);
-        padding-top: 30px;
-        overflow: hidden;
-    }
-
     .poster {
         box-sizing: border-box;
         text-align: center;
@@ -512,14 +190,6 @@ h1 {
     }
 }
 
-#watch {
-    margin-top: 20px;
-}
-
-.divo {
-    padding: 10px;
-}
-
 .divox {
     padding: 0px;
 }
@@ -531,13 +201,6 @@ h2 {
     width: 100%;
     font-size: 20px;
     margin: 10px;
-}
-
-.divo2 {
-    background-color: rgb(32, 33, 37);
-    padding: 20px 10px;
-    padding-bottom: 10px;
-    border-radius: 4px;
 }
 
 #latest {
@@ -558,20 +221,6 @@ h2 {
     text-align: center;
     width: 100%;
     height: fit-content;
-}
-
-.ep-btn {
-    padding: 10px 20px;
-    background-color: rgb(53, 55, 61);
-    color: #999;
-    text-decoration: none;
-    border-radius: 4px;
-    font-weight: 400;
-    font-family: "Montserrat", sans-serif;
-    font-size: 14px;
-    margin: 0px 2px;
-    margin-bottom: 10px;
-    display: inline-block;
 }
 
 .la-anime {
@@ -642,13 +291,6 @@ h2 {
     z-index: 5;
 }
 
-.dubb2 {
-    left: unset;
-    right: 10px;
-    background-color: white;
-    color: black;
-}
-
 .la-details {
     background-color: rgb(32, 33, 37);
     width: 100%;
@@ -699,6 +341,16 @@ h2 {
     color: rgba(255, 255, 255, 0.3);
     font-family: "Montserrat", sans-serif;
     font-size: 12px;
+}
+
+#head-div {
+    padding-top: 25px;
+    width: 100%;
+}
+
+#title1 {
+    height: fit-content;
+    width: 70%;
 }
 
 #search-div {
@@ -753,11 +405,6 @@ h2 {
     border: none;
 }
 
-#title1 {
-    height: fit-content;
-    width: 70%;
-}
-
 @media only screen and (min-width: 420px) {
     .shadow {
         height: 240px;
@@ -773,9 +420,14 @@ h2 {
         max-width: 220px;
     }
 
+    #head-div {
+        padding-top: 25px;
+        width: 100%;
+    }
+
     #title1 {
         height: fit-content;
-        width: calc(100% - 50px);
+        width: 100%;
         text-align: center;
     }
 
@@ -847,7 +499,7 @@ h2 {
 
     #title1 {
         height: fit-content;
-        width: 100%;
+        width: calc(100% - 50px);
         text-align: center;
     }
 
@@ -856,14 +508,6 @@ h2 {
         right: 0px;
         top: 25px;
     }
-}
-
-#cover {
-    background-image: url(https://img.zorores.com/_r/300x400/100/ff/28/ff28ef11fe9ba2c20735f428884b127b/ff28ef11fe9ba2c20735f428884b127b.jpg);
-}
-
-#cover {
-    background-image: url(https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131516-kLB37ISBeOX0.jpg);
 }
 
 @font-face {
@@ -970,21 +614,4 @@ h2 {
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
         U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
         U+2215, U+FEFF, U+FFFD;
-}
-
-#comment_section {
-    width: 100%;
-    margin: 20px 0px;
-    padding: 0px 20px;
-    text-align: center;
-}
-
-#disqus_thread {
-    margin: auto;
-    max-width: 700px;
-}
-
-#hr01 {
-    width: 100%;
-    margin: 20px 0px;
 }

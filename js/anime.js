@@ -3,8 +3,7 @@
 const infoapi = "https://techzapi2.vercel.app/anime/gogoanime/info/";
 const epapi = "https://api.techzbots1.workers.dev/gogo/episodes/";
 const searchapi = "https://techzapi2.vercel.app/meta/anilist/";
-const anilistinfoapi =
-    "https://techzapi2.vercel.app/meta/anilist/info/";
+const anilistinfoapi = "https://techzapi2.vercel.app/meta/anilist/info/";
 const gogosearchapi = "https://techzapi2.vercel.app/anime/gogoanime/";
 
 // Usefull functions
@@ -69,7 +68,7 @@ function getAnilistOtherTitle(title, current) {
     }
 }
 
-// Function to get anime info
+// Function to get anime info from gogo id
 async function getAnimeInfo(anime_id) {
     try {
         const data = await getJson(infoapi + anime_id);
@@ -103,6 +102,7 @@ async function getAnimeInfo(anime_id) {
         await getSearchGogoAnimeInfo(anime_id);
     }
 }
+// Function to get anime info from gogo search
 async function getSearchGogoAnimeInfo(anime_title) {
     try {
         let data = await getJson(gogosearchapi + anime_title);
@@ -138,6 +138,7 @@ async function getSearchGogoAnimeInfo(anime_title) {
         await getAnilistAnimeInfo(anime_title);
     }
 }
+// Function to get anime info from anilist search
 async function getAnilistAnimeInfo(anime_title) {
     try {
         let data = await getJson(searchapi + anime_title);
@@ -175,10 +176,11 @@ async function getAnilistAnimeInfo(anime_title) {
         document.getElementById("ephtmldiv").innerHTML =
             '<a class="ep-btn">Anime Name Not Found On GogoAnime, Try Searching With A Different Name...</a>';
     } catch (e) {
-        underConstruction();
+        console.log(e);
     }
 }
 
+// Function to get episode list
 async function getEpList(anime_id) {
     const data = await getJson(epapi + anime_id);
     const total = Number(data["total"]);
@@ -191,6 +193,7 @@ async function getEpList(anime_id) {
     document.getElementById("ephtmldiv").innerHTML = ephtml;
 }
 
+// Function to get anime recommendations
 async function getRecommendations(anime_title) {
     let data = await getJson(searchapi + anime_title);
     const anime_id = data["results"][0]["id"];
@@ -207,7 +210,6 @@ async function getRecommendations(anime_title) {
     document.getElementById("latest2").innerHTML = rechtml;
 }
 
-//Running functions
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
@@ -215,12 +217,8 @@ if (urlParams.get("anime") == null) {
     window.location = "/";
 }
 
+//Running functions
 getAnimeInfo(urlParams.get("anime")).then((anime_title) => {
     RefreshLazyLoader();
     console.log("Anime Info loaded");
 });
-
-function underConstruction() {
-    document.documentElement.innerHTML =
-        '<h1>Under Construction !!!</h1><h3>Some features may not work properly...</h3><a href="/">Click To Go Back To Home</a>';
-}

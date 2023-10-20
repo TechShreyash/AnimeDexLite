@@ -2,6 +2,8 @@ const streamapi = "https://techzapi2.vercel.app/anime/gogoanime/watch/";
 const serversapi = "https://techzapi2.vercel.app/anime/gogoanime/servers/";
 const epapi = "https://api.techzbots1.workers.dev/gogo/episodes/";
 
+// Usefull functions
+
 async function getJson(url) {
     try {
         const response = await axios.get(url);
@@ -20,6 +22,7 @@ function sentenceCase(str) {
     });
 }
 
+// Function to get m3u8 url of episode
 async function getEpisode(anime, episode) {
     const serversbtn = document.getElementById("serversbtn");
 
@@ -41,6 +44,7 @@ async function getEpisode(anime, episode) {
     }
 }
 
+// Function to available servers
 async function getServers(anime, episode) {
     const serversbtn = document.getElementById("serversbtn");
     const sno = serversbtn.getElementsByClassName("sobtn").length;
@@ -58,6 +62,7 @@ async function getServers(anime, episode) {
     serversbtn.innerHTML += html;
 }
 
+// Function to select server
 function selectServer(btn) {
     const buttons = document.getElementsByClassName("sobtn");
     const iframe = document.getElementById("AnimeDexFrame");
@@ -68,11 +73,13 @@ function selectServer(btn) {
     btn.className = "sobtn sactive";
 }
 
+// Function to show download links
 function showDownload() {
     document.getElementById("showdl").style.display = "none";
     document.getElementById("dldiv").classList.toggle("show");
 }
 
+// Function to get episode list
 async function getEpList(anime_id) {
     const data = await getJson(epapi + anime_id);
     const total = Number(data["total"]);
@@ -86,6 +93,7 @@ async function getEpList(anime_id) {
     return total;
 }
 
+// Function to get selector btn
 async function getSelectorBtn(url, current, totalep) {
     current = Number(current);
     totalep = Number(totalep);
@@ -130,6 +138,7 @@ document.documentElement.innerHTML =
         urlParams.get("episode")
     );
 
+// Running functions
 getEpisode(urlParams.get("anime"), urlParams.get("episode")).then((data) => {
     console.log("Episode loaded");
     getServers(urlParams.get("anime"), urlParams.get("episode")).then(
@@ -148,4 +157,3 @@ getEpisode(urlParams.get("anime"), urlParams.get("episode")).then((data) => {
         }
     );
 });
-

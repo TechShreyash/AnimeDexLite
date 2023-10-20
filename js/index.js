@@ -2,8 +2,7 @@
 
 const trendingapi =
     "https://techzapi2.vercel.app/meta/anilist/trending?perPage=10";
-const popularapi =
-    "https://techzapi2.vercel.app/anime/gogoanime/top-airing";
+const popularapi = "https://techzapi2.vercel.app/anime/gogoanime/top-airing";
 const recentapi =
     "https://techzapi2.vercel.app/anime/gogoanime/recent-episodes?page=";
 
@@ -22,9 +21,29 @@ function genresToString(genres) {
     return genres.join(", ");
 }
 
+function shuffle(array) {
+    let currentIndex = array.length,
+        randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex > 0) {
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex],
+            array[currentIndex],
+        ];
+    }
+
+    return array;
+}
+
 // Adding slider animes (trending animes from anilist)
 async function getTrendingAnimes() {
-    const data = (await getJson(trendingapi))["results"];
+    const data = shuffle((await getJson(trendingapi))["results"]);
     let SLIDER_HTML = "";
 
     for (let pos = 0; pos < data.length; pos++) {
@@ -41,9 +60,8 @@ async function getTrendingAnimes() {
             poster = anime["image"];
         }
 
-        SLIDER_HTML += `<div class="mySlides fade"> <div class="data-slider"> <p class="spotlight">#${
-            pos + 1
-        } Spotlight</p><h1>${title}</h1> <div class="extra1"> <span class="year"><i class="fa fa-play-circle"></i>${type}</span> <span class="year year2"><i class="fa fa-calendar"></i>${status}</span> <span class="cbox cbox1">${genres}</span> <span class="cbox cbox2">HD</span> </div><p class="small-synop">${description}</p><div id="watchh"> <a href="${url}" class="watch-btn"> <i class="fa fa-play-circle"></i> Watch Now </a> <a href="${url}" class="watch-btn watch-btn2"> <i class="fa fa-info-circle"></i> Details<i class="fa fa-angle-right"></i> </a> </div></div><div class="shado"> <a href="${url}"></a> </div><img src="${poster}"> </div>`;
+        SLIDER_HTML += `<div class="mySlides fade"> <div class="data-slider"> <p class="spotlight">#${pos + 1
+            } Spotlight</p><h1>${title}</h1> <div class="extra1"> <span class="year"><i class="fa fa-play-circle"></i>${type}</span> <span class="year year2"><i class="fa fa-calendar"></i>${status}</span> <span class="cbox cbox1">${genres}</span> <span class="cbox cbox2">HD</span> </div><p class="small-synop">${description}</p><div id="watchh"> <a href="${url}" class="watch-btn"> <i class="fa fa-play-circle"></i> Watch Now </a> <a href="${url}" class="watch-btn watch-btn2"> <i class="fa fa-info-circle"></i> Details<i class="fa fa-angle-right"></i> </a> </div></div><div class="shado"> <a href="${url}"></a> </div><img src="${poster}"> </div>`;
     }
 
     document.querySelector(".slideshow-container").innerHTML =
@@ -63,9 +81,8 @@ async function getPopularAnimes() {
         let url = "/anime.html?anime=" + id;
         let image = anime["image"];
 
-        POPULAR_HTML += `<a href="${url}"><div class="poster la-anime"> <div id="shadow1" class="shadow"><div class="dubb"># ${
-            pos + 1
-        }</div> </div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${image}"> </div><div class="la-details"> <h3>${title}</h3></div></div></a>`;
+        POPULAR_HTML += `<a href="${url}"><div class="poster la-anime"> <div id="shadow1" class="shadow"><div class="dubb"># ${pos + 1
+            }</div> </div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${image}"> </div><div class="la-details"> <h3>${title}</h3></div></div></a>`;
     }
 
     document.querySelector(".popularg").innerHTML = POPULAR_HTML;
@@ -89,22 +106,7 @@ async function getRecentAnimes(page = 1) {
     document.querySelector(".recento").innerHTML += RECENT_HTML;
 }
 
-getTrendingAnimes().then((data) => {
-    RefreshLazyLoader();
-    showSlides(slideIndex);
-    showSlides2();
-    console.log("Sliders loaded");
-});
-
-getPopularAnimes().then((data) => {
-    RefreshLazyLoader();
-    console.log("Popular animes loaded");
-});
-getRecentAnimes().then((data) => {
-    RefreshLazyLoader();
-    console.log("Recent animes loaded");
-});
-
+// Slider functions
 let slideIndex = 0;
 let clickes = 0;
 
@@ -169,6 +171,7 @@ function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// To load more animes when scrolled to bottom
 let page = 2;
 let isLoading = 0;
 let errCount = 0;
@@ -192,6 +195,7 @@ function loadAnimes() {
         }
     }
 }
+
 window.addEventListener("scroll", () => {
     if (
         window.scrollY + window.innerHeight >=
@@ -199,4 +203,22 @@ window.addEventListener("scroll", () => {
     ) {
         loadAnimes();
     }
+});
+
+// Running functions
+
+getTrendingAnimes().then((data) => {
+    RefreshLazyLoader();
+    showSlides(slideIndex);
+    showSlides2();
+    console.log("Sliders loaded");
+});
+
+getPopularAnimes().then((data) => {
+    RefreshLazyLoader();
+    console.log("Popular animes loaded");
+});
+getRecentAnimes().then((data) => {
+    RefreshLazyLoader();
+    console.log("Recent animes loaded");
 });
