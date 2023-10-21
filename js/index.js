@@ -53,7 +53,7 @@ async function getTrendingAnimes() {
         let status = anime["status"];
         let genres = genresToString(anime["genres"]);
         let description = anime["description"];
-        let url = "/anime.html?anime=" + encodeURIComponent(title);
+        let url = "./anime.html?anime=" + encodeURIComponent(title);
 
         let poster = anime["cover"];
         if (poster == null) {
@@ -78,7 +78,7 @@ async function getPopularAnimes() {
         let anime = data[pos];
         let title = anime["title"];
         let id = anime["id"];
-        let url = "/anime.html?anime=" + id;
+        let url = "./anime.html?anime=" + id;
         let image = anime["image"];
 
         POPULAR_HTML += `<a href="${url}"><div class="poster la-anime"> <div id="shadow1" class="shadow"><div class="dubb"># ${pos + 1
@@ -96,7 +96,7 @@ async function getRecentAnimes(page = 1) {
         let anime = data[pos];
         let title = anime["title"];
         let id = anime["id"];
-        let url = "/anime.html?anime=" + id;
+        let url = "./anime.html?anime=" + id;
         let image = anime["image"];
         let ep = anime["episodeNumber"];
 

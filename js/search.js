@@ -48,7 +48,7 @@ async function SearchAnime(query, page = 1) {
 
     for (let i = 0; i < animes.length; i++) {
         const anime = animes[i];
-        html += `<a href="/anime.html?anime=${anime["id"]}"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime["subOrDub"].toUpperCase()}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${anime["image"]}"> </div><div class="la-details"> <h3>${sentenceCase(anime["title"])}</h3> <div id="extra"> <span>${anime["releaseDate"]}</span> </div></div></div></a>`;
+        html += `<a href="./anime.html?anime=${anime["id"]}"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime["subOrDub"].toUpperCase()}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${anime["image"]}"> </div><div class="la-details"> <h3>${sentenceCase(anime["title"])}</h3> <div id="extra"> <span>${anime["releaseDate"]}</span> </div></div></div></a>`;
     }
     contentdiv.innerHTML += html;
 
@@ -63,7 +63,7 @@ const query = params.get("query");
 let page = 1
 
 if (query == null) {
-    window.location.replace("/");
+    window.location.replace("./index.html");
 }
 
 document.getElementById('latest').innerHTML = `Search Results: ${query}`;

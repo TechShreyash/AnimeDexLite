@@ -169,7 +169,7 @@ async function getAnilistAnimeInfo(anime_title) {
         for (i = 0; i < recommendations.length; i++) {
             let anime = recommendations[i];
             let title = anime["title"]["userPreferred"];
-            rechtml += `<a href="/anime.html?anime=${title}"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime["rating"]}</div><div class="dubb dubb2">${anime["type"]}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${anime["image"]}"> </div><div class="la-details"> <h3>${title}</h3> <div id="extra"> <span>${anime["status"]}</span> <span class="dot"></span> <span>${anime["episodes"]}</span> </div></div></div></a>`;
+            rechtml += `<a href="./anime.html?anime=${title}"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime["rating"]}</div><div class="dubb dubb2">${anime["type"]}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${anime["image"]}"> </div><div class="la-details"> <h3>${title}</h3> <div id="extra"> <span>${anime["status"]}</span> <span class="dot"></span> <span>${anime["episodes"]}</span> </div></div></div></a>`;
         }
         document.getElementById("latest2").innerHTML = rechtml;
 
@@ -187,7 +187,7 @@ async function getEpList(anime_id) {
     let ephtml = "";
 
     for (let i = 0; i < total; i++) {
-        ephtml += `<a class="ep-btn" href="/episode.html?anime=${anime_id}&episode=${i + 1
+        ephtml += `<a class="ep-btn" href="./episode.html?anime=${anime_id}&episode=${i + 1
             }">${i + 1}</a>`;
     }
     document.getElementById("ephtmldiv").innerHTML = ephtml;
@@ -205,7 +205,7 @@ async function getRecommendations(anime_title) {
     for (i = 0; i < recommendations.length; i++) {
         let anime = recommendations[i];
         let title = anime["title"]["userPreferred"];
-        rechtml += `<a href="/anime.html?anime=${title}"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime["rating"]}</div><div class="dubb dubb2">${anime["type"]}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${anime["image"]}"> </div><div class="la-details"> <h3>${title}</h3> <div id="extra"> <span>${anime["status"]}</span> <span class="dot"></span> <span>${anime["episodes"]}</span> </div></div></div></a>`;
+        rechtml += `<a href="./anime.html?anime=${title}"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime["rating"]}</div><div class="dubb dubb2">${anime["type"]}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${anime["image"]}"> </div><div class="la-details"> <h3>${title}</h3> <div id="extra"> <span>${anime["status"]}</span> <span class="dot"></span> <span>${anime["episodes"]}</span> </div></div></div></a>`;
     }
     document.getElementById("latest2").innerHTML = rechtml;
 }
@@ -214,7 +214,7 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
 if (urlParams.get("anime") == null) {
-    window.location = "/";
+    window.location = "./index.html";
 }
 
 //Running functions
