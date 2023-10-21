@@ -1,6 +1,7 @@
 const streamapi = "https://techzapi2.vercel.app/anime/gogoanime/watch/";
 const serversapi = "https://techzapi2.vercel.app/anime/gogoanime/servers/";
 const epapi = "https://api.techzbots1.workers.dev/gogo/episodes/";
+const dlapi = "https://api.techzbots1.workers.dev/gogo/dl/";
 
 // Usefull functions
 
@@ -24,42 +25,57 @@ function sentenceCase(str) {
 
 // Function to get m3u8 url of episode
 async function getEpisode(anime, episode) {
-    const serversbtn = document.getElementById("serversbtn");
+    try {
+        const serversbtn = document.getElementById("serversbtn");
 
-    const data = (await getJson(streamapi + anime + "-episode-" + episode))[
-        "sources"
-    ];
+        const data = (await getJson(streamapi + anime + "-episode-" + episode))[
+            "sources"
+        ];
 
-    for (let i = 0; i < data.length; i++) {
-        if (data[i]["quality"] == "default") {
-            const url = data[i]["url"];
+        for (let i = 0; i < data.length; i++) {
+            if (data[i]["quality"] == "default") {
+                const url = data[i]["url"];
 
-            serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn sactive" onclick="selectServer(this)" data-value="/embed.html?url=${url}">Server 1</a> </div>`;
-            document.getElementsByClassName("sactive")[0].click();
-        } else if (data[i]["quality"] == "backup") {
-            const url = data[i]["url"];
+                serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn sactive" onclick="selectServer(this)" data-value="/embed.html?url=${url}">Server 1</a> </div>`;
+                document.getElementsByClassName("sactive")[0].click();
+            } else if (data[i]["quality"] == "backup") {
+                const url = data[i]["url"];
 
-            serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="/embed.html?url=${url}">Server 2</a> </div>`;
+                serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="/embed.html?url=${url}">Server 2</a> </div>`;
+            }
         }
+        return true;
+    } catch (err) {
+        return false;
     }
 }
 
 // Function to available servers
-async function getServers(anime, episode) {
+async function getServers(anime, episode, success) {
     const serversbtn = document.getElementById("serversbtn");
     const sno = serversbtn.getElementsByClassName("sobtn").length;
 
     const data = await getJson(serversapi + anime + "-episode-" + episode);
     html = "";
 
-    for (let i = 0; i < data.length; i++) {
-        const server = data[i];
-        if (server["name"] != "Vidstreaming") {
+    if (success == true) {
+        for (let i = 0; i < data.length; i++) {
+            const server = data[i];
+            if (server["name"] != "Vidstreaming") {
+                html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="${server["url"]
+                    }">Server ${i + sno}</a> </div>`;
+            }
+        }
+        serversbtn.innerHTML += html;
+    } else if (success == false) {
+        for (let i = 0; i < data.length; i++) {
+            const server = data[i];
             html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="${server["url"]
                 }">Server ${i + sno}</a> </div>`;
         }
+        serversbtn.innerHTML += html;
+        document.getElementsByClassName("sobtn")[0].click();
     }
-    serversbtn.innerHTML += html;
 }
 
 // Function to select server
@@ -123,6 +139,20 @@ async function getSelectorBtn(url, current, totalep) {
     }
 }
 
+// Function to get download links
+async function getDownloadLinks(anime, episode) {
+    const data = await getJson(dlapi + anime + "-episode-" + episode);
+    console.log(data);
+    let html = "";
+
+    for (const [key, value] of Object.entries(data)) {
+        const quality = key.split("x")[1];
+        const url = value;
+        html += `<div class="sitem"> <a class="sobtn download" target="_blank" href="${url}"><i class="fa fa-download"></i>${quality}p</a> </div>`;
+    }
+    document.getElementById("dllinks").innerHTML = html;
+}
+
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
@@ -139,21 +169,27 @@ document.documentElement.innerHTML =
     );
 
 // Running functions
-getEpisode(urlParams.get("anime"), urlParams.get("episode")).then((data) => {
+getEpisode(urlParams.get("anime"), urlParams.get("episode")).then((success) => {
     console.log("Episode loaded");
-    getServers(urlParams.get("anime"), urlParams.get("episode")).then(
+    getServers(urlParams.get("anime"), urlParams.get("episode"), success).then(
         (data) => {
             console.log("Servers loaded");
-            getEpList(urlParams.get("anime")).then((totalep) => {
-                console.log("Episodes loaded");
-                getSelectorBtn(
-                    `/episode.html?anime=${urlParams.get("anime")}&episode=`,
-                    urlParams.get("episode"),
-                    totalep
-                ).then((data) => {
-                    console.log("Selector btn loaded");
-                });
-            });
         }
     );
+});
+
+getEpList(urlParams.get("anime")).then((totalep) => {
+    console.log("Episodes loaded");
+    getSelectorBtn(
+        `/episode.html?anime=${urlParams.get("anime")}&episode=`,
+        urlParams.get("episode"),
+        totalep
+    ).then((data) => {
+        console.log("Selector btn loaded");
+        getDownloadLinks(urlParams.get("anime"), urlParams.get("episode")).then(
+            (data) => {
+                console.log("Download links loaded");
+            }
+        );
+    });
 });
