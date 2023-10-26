@@ -97,8 +97,8 @@
         } else if (url.includes("/episode/")) {
             const host = url.split("/episode/")[0];
             const episode = url.split("/episode/")[1];
-            const anime = episode.split("-episode-")[0];
-            const ep = episode.split("-episode-")[1];
+            const anime = episode.split("/")[0];
+            const ep = episode.split("/")[1];
             window.location.href =
                 host + "/episode.html?anime=" + anime + "&episode=" + ep;
         }
