@@ -113,7 +113,6 @@ async function getEpList(anime_id) {
 async function getSelectorBtn(url, current, totalep) {
     current = Number(current);
     totalep = Number(totalep);
-    console.log(current + " " + totalep);
     let html = "";
 
     if (totalep < 2) {
@@ -142,7 +141,6 @@ async function getSelectorBtn(url, current, totalep) {
 // Function to get download links
 async function getDownloadLinks(anime, episode) {
     const data = await getJson(dlapi + anime + "-episode-" + episode);
-    console.log(data);
     let html = "";
 
     for (const [key, value] of Object.entries(data)) {

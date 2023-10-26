@@ -87,22 +87,7 @@
     <hr />
 
     <!-- Script to transform old animedex url to new one -->
-    <script>
-        const url = window.location.href;
-
-        if (url.includes("/anime/")) {
-            const host = url.split("/anime/")[0];
-            const anime = url.split("/anime/")[1];
-            window.location.href = host + "/anime.html?anime=" + anime;
-        } else if (url.includes("/episode/")) {
-            const host = url.split("/episode/")[0];
-            const episode = url.split("/episode/")[1];
-            const anime = episode.split("/")[0];
-            const ep = episode.split("/")[1];
-            window.location.href =
-                host + "/episode.html?anime=" + anime + "&episode=" + ep;
-        }
-    </script>
+    <script>const url = window.location.href; if (url.includes("/anime/")) { let e = url.split("/anime/")[0], i = url.split("/anime/")[1]; window.location.href = e + "/anime.html?anime=" + i } else if (url.includes("/episode/")) { let l = url.split("/episode/")[0], s = url.split("/episode/")[1], t = s.split("/")[0], n = s.split("/")[1]; window.location.href = l + "/episode.html?anime=" + t + "&episode=" + n }</script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./js/index.js"></script>
 </body>
