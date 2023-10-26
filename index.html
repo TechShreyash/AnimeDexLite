@@ -44,7 +44,8 @@
 <body>
     <header id="head-div">
         <div id="title1">
-            <a href="./index.html"><img src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/header.png"
+            <a href="./index.html"><img
+                    src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/header.png"
                     alt="AnimeDex" /></a>
         </div>
         <div id="search-div">
@@ -85,6 +86,23 @@
     </footer>
     <hr />
 
+    <!-- Script to transform old animedex url to new one -->
+    <script>
+        const url = window.location.href;
+
+        if (url.includes("/anime/")) {
+            const host = url.split("/anime/")[0];
+            const anime = url.split("/anime/")[1];
+            window.location.href = host + "/anime.html?anime=" + anime;
+        } else if (url.includes("/episode/")) {
+            const host = url.split("/episode/")[0];
+            const episode = url.split("/episode/")[1];
+            const anime = episode.split("-episode-")[0];
+            const ep = episode.split("-episode-")[1];
+            window.location.href =
+                host + "/episode.html?anime=" + anime + "&episode=" + ep;
+        }
+    </script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./js/index.js"></script>
 </body>
