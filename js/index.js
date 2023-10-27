@@ -1,10 +1,10 @@
 // Api urls
 
 const trendingapi =
-    "https://techzapi2.vercel.app/meta/anilist/trending?perPage=10";
-const popularapi = "https://techzapi2.vercel.app/anime/gogoanime/top-airing";
+    "https://techzapi.up.railway.app/meta/anilist/trending?perPage=10";
+const popularapi = "https://techzapi.up.railway.app/anime/gogoanime/top-airing";
 const recentapi =
-    "https://techzapi2.vercel.app/anime/gogoanime/recent-episodes?page=";
+    "https://techzapi.up.railway.app/anime/gogoanime/recent-episodes?page=";
 
 // Usefull functions
 

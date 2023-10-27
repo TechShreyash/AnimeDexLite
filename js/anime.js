@@ -1,10 +1,10 @@
 // Api urls
 
-const infoapi = "https://techzapi2.vercel.app/anime/gogoanime/info/";
+const infoapi = "https://techzapi.up.railway.app/anime/gogoanime/info/";
 const epapi = "https://api.techzbots1.workers.dev/gogo/episodes/";
-const searchapi = "https://techzapi2.vercel.app/meta/anilist/";
-const anilistinfoapi = "https://techzapi2.vercel.app/meta/anilist/info/";
-const gogosearchapi = "https://techzapi2.vercel.app/anime/gogoanime/";
+const searchapi = "https://techzapi.up.railway.app/meta/anilist/";
+const anilistinfoapi = "https://techzapi.up.railway.app/meta/anilist/info/";
+const gogosearchapi = "https://techzapi.up.railway.app/anime/gogoanime/";
 
 // Usefull functions
 
