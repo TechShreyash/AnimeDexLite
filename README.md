@@ -20,7 +20,7 @@
 -   Cloudflare, Netlify, Github Pages, Vercel, Render
 -   And Many More (Search On Google - Free Static Website Hosting)
 
-> You can easily on any free hosting
+> You can easily host on any free hosting
 
 ## Run On Your Pc
 
