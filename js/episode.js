@@ -168,6 +168,9 @@ async function loadEpisodeData(data) {
     const stream = data["stream"];
     const servers = data["servers"];
 
+    document.documentElement.innerHTML =
+        document.documentElement.innerHTML.replaceAll("{{ title }}", name);
+
     try {
         loadVideo(name, stream).then(() => {
             console.log("Video loaded");
