@@ -1,17 +1,12 @@
-# AnimeDexLite
+# AnimeDexLite v2.0
 
 -   Pure html, css and js version of AnimeDex
 -   Lite Weight, Fast and Free
--   Easy to deploy anywhere
--   Powered By [TechZApi](https://telegram.me/TechZBots) And [ConsumetApi](https://github.com/consumet/api.consumet.org)
-
-## Screenshot
-
-![image](https://github.com/TechShreyash/AnimeDexLite/assets/82265247/f722db10-4fb5-4d9c-bb40-df599a250a90)
+-   Easy to deploy
+-   Powered By Blazing Fast [AnimeDexApi](https://api.anime-dex.workers.dev)
 
 ## Demo
 
--   https://animedex.live
 -   https://animedex.pages.dev
 -   https://animedex-lite.netlify.app
 -   https://techshreyash.github.io/AnimeDexLite
@@ -20,19 +15,16 @@
 
 ## Host Your Own (Free Hostings)
 
--   Cloudflare
--   Netlify
--   Github Pages
--   Vercel
--   Render
+-   Cloudflare, Netlify, Github Pages, Vercel, Render
 -   And Many More (Search On Google - Free Static Website Hosting)
 
-## Host Own Your Pc
+> You can easily on any free hosting
+
+## Run On Your Pc
 
 -   Download this repo
 -   Open `index.html` file in browser
 
-## Compressed Version
+### Join For Latest Updates
 
-- Zip Download : https://drive.google.com/file/d/1AqxqIkU3aVozigI5eyBirUpPdbQp4OEi/view?usp=sharing
-- 7z Download : https://drive.google.com/file/d/1km17JPl7lLcBPNagXBw_Kehtvm7m2mYc/view?usp=sharing
+[![Telegram Channel](https://img.shields.io/static/v1?label=Join&message=Telegram%20Channel&color=blueviolet&style=for-the-badge&logo=telegram&logoColor=violet)](https://telegram.me/TechZBots) [![Telegram Group](https://img.shields.io/static/v1?label=Join&message=Telegram%20Group&color=blueviolet&style=for-the-badge&logo=telegram&logoColor=violet)](https://telegram.me/TechZBots_Support)

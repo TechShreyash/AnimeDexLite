@@ -1,11 +1,11 @@
-const searchapi = "https://techzapi.up.railway.app/anime/gogoanime/";
+const searchapi = "https://api.anime-dex.workers.dev/search/";
 
 // Usefull functions
 
 async function getJson(url) {
     try {
-        const response = await axios.get(url);
-        return response.data;
+        const response = await fetch(url);
+        return await response.json();
     } catch (errors) {
         console.error(errors);
     }
@@ -48,7 +48,23 @@ async function SearchAnime(query, page = 1) {
 
     for (let i = 0; i < animes.length; i++) {
         const anime = animes[i];
-        html += `<a href="./anime.html?anime=${anime["id"]}"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime["subOrDub"].toUpperCase()}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${anime["image"]}"> </div><div class="la-details"> <h3>${sentenceCase(anime["title"])}</h3> <div id="extra"> <span>${anime["releaseDate"]}</span> </div></div></div></a>`;
+        if (anime["title"].toLowerCase().includes("dub")) {
+            anime["subOrDub"] = "DUB";
+        } else {
+            anime["subOrDub"] = "SUB";
+        }
+
+        html += `<a href="./anime.html?anime=${
+            anime["id"]
+        }"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime[
+            "subOrDub"
+        ].toUpperCase()}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${
+            anime["img"]
+        }"> </div><div class="la-details"> <h3>${sentenceCase(
+            anime["title"]
+        )}</h3> <div id="extra"> <span>${
+            anime["releaseDate"]
+        }</span> </div></div></div></a>`;
     }
     contentdiv.innerHTML += html;
 
@@ -60,13 +76,13 @@ async function SearchAnime(query, page = 1) {
 
 const params = new URLSearchParams(window.location.search);
 const query = params.get("query");
-let page = 1
+let page = 1;
 
 if (query == null) {
     window.location.replace("./index.html");
 }
 
-document.getElementById('latest').innerHTML = `Search Results: ${query}`;
+document.getElementById("latest").innerHTML = `Search Results: ${query}`;
 
 SearchAnime(query, page).then((data) => {
     hasNextPage = data;

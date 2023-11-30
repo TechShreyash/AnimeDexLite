@@ -183,22 +183,20 @@ div {
     display: block;
 }
 
-@media only screen and (min-width: 600px) {
-    ::-webkit-scrollbar {
-        width: 5px;
-    }
+::-webkit-scrollbar {
+    width: 5px;
+}
 
-    ::-webkit-scrollbar-track {
-        background: #f1f1f100;
-    }
+::-webkit-scrollbar-track {
+    background: #f1f1f100;
+}
 
-    ::-webkit-scrollbar-thumb {
-        background: #888;
-    }
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
 
-    ::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 #title1 {
@@ -1805,4 +1803,9 @@ h2 {
 
 .fa-microphone {
     color: #ed3832;
+}
+
+#load img {
+    width: 5%;
+    min-width: 35px;
 }

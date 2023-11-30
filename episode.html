@@ -68,7 +68,7 @@
         <div id="server_main">
             <div class="status">
                 <div class="scontent">
-                    You are watching <b>{{ title }}</b>If current server
+                    You are watching <b id="ep-name">{{ title }}</b>If current server
                     doesn't work please try other servers beside.
                 </div>
             </div>
@@ -88,7 +88,12 @@
 
                 <div class="server">
                     <div class="stitle"> <i class="fa fa-closed-captioning"></i>Quality: </div>
-                    <div id="dllinks" class="slist"></div>
+                    <div id="dllinks" class="slist">
+                        <div id="load">
+                            <img src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading2.gif"
+                                alt="Loading..." />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -110,7 +115,7 @@
     </footer>
     <hr />
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <script src="./js/episode.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BHQX4066ZV"></script>
     <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-BHQX4066ZV');</script>

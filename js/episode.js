@@ -1,14 +1,13 @@
-const streamapi = "https://techzapi.up.railway.app/anime/gogoanime/watch/";
-const serversapi = "https://techzapi.up.railway.app/anime/gogoanime/servers/";
-const epapi = "https://api.techzbots1.workers.dev/gogo/episodes/";
-const dlapi = "https://api.techzbots1.workers.dev/gogo/dl/";
+const animeapi = "https://api.anime-dex.workers.dev/anime/";
+const episodeapi = "https://api.anime-dex.workers.dev/episode/";
+const dlapi = "https://api.anime-dex.workers.dev/download/";
 
 // Usefull functions
 
 async function getJson(url) {
     try {
-        const response = await axios.get(url);
-        return response.data;
+        const response = await fetch(url);
+        return await response.json();
     } catch (errors) {
         console.error(errors);
     }
@@ -23,27 +22,23 @@ function sentenceCase(str) {
     });
 }
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 // Function to get m3u8 url of episode
-async function getEpisode(anime, episode) {
+async function loadVideo(name, stream) {
     try {
+        document.getElementById("ep-name").innerHTML = name;
         const serversbtn = document.getElementById("serversbtn");
 
-        const data = (await getJson(streamapi + anime + "-episode-" + episode))[
-            "sources"
-        ];
+        let url = stream["sources"][0]["file"];
+        serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn sactive" onclick="selectServer(this)" data-value="./embed.html?url=${url}">AD Free 1</a> </div>`;
+        document.getElementsByClassName("sactive")[0].click();
 
-        for (let i = 0; i < data.length; i++) {
-            if (data[i]["quality"] == "default") {
-                const url = data[i]["url"];
+        url = stream["sources_bk"][0]["file"];
+        serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="./embed.html?url=${url}">AD Free 2</a> </div>`;
 
-                serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn sactive" onclick="selectServer(this)" data-value="./embed.html?url=${url}">Server 1</a> </div>`;
-                document.getElementsByClassName("sactive")[0].click();
-            } else if (data[i]["quality"] == "backup") {
-                const url = data[i]["url"];
-
-                serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="./embed.html?url=${url}">Server 2</a> </div>`;
-            }
-        }
         return true;
     } catch (err) {
         return false;
@@ -51,29 +46,19 @@ async function getEpisode(anime, episode) {
 }
 
 // Function to available servers
-async function getServers(anime, episode, success) {
+async function loadServers(servers, success = true) {
+    console.log(servers);
     const serversbtn = document.getElementById("serversbtn");
-    const sno = serversbtn.getElementsByClassName("sobtn").length;
 
-    const data = await getJson(serversapi + anime + "-episode-" + episode);
     html = "";
 
-    if (success == true) {
-        for (let i = 0; i < data.length; i++) {
-            const server = data[i];
-            if (server["name"] != "Vidstreaming") {
-                html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="${server["url"]
-                    }">Server ${i + sno}</a> </div>`;
-            }
-        }
-        serversbtn.innerHTML += html;
-    } else if (success == false) {
-        for (let i = 0; i < data.length; i++) {
-            const server = data[i];
-            html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="${server["url"]
-                }">Server ${i + sno}</a> </div>`;
-        }
-        serversbtn.innerHTML += html;
+    for (let [key, value] of Object.entries(servers)) {
+        key = capitalizeFirstLetter(key);
+        html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="${value}">${key}</a> </div>`;
+    }
+    serversbtn.innerHTML += html;
+
+    if (success == false) {
         document.getElementsByClassName("sobtn")[0].click();
     }
 }
@@ -93,20 +78,27 @@ function selectServer(btn) {
 function showDownload() {
     document.getElementById("showdl").style.display = "none";
     document.getElementById("dldiv").classList.toggle("show");
+
+    getDownloadLinks(urlParams.get("anime"), urlParams.get("episode")).then(
+        () => {
+            console.log("Download links loaded");
+        }
+    );
 }
 
 // Function to get episode list
 async function getEpList(anime_id) {
-    const data = await getJson(epapi + anime_id);
-    const total = Number(data["total"]);
+    const data = (await getJson(animeapi + anime_id))["results"];
+    const eplist = data["episodes"];
     let ephtml = "";
 
-    for (let i = 0; i < total; i++) {
-        ephtml += `<a class="ep-btn" href="./episode.html?anime=${anime_id}&episode=${i + 1
-            }">${i + 1}</a>`;
+    for (let i = 0; i < eplist.length; i++) {
+        anime_id = eplist[i][1].split("-episode-")[0];
+        ep_num = eplist[i][0];
+        ephtml += `<a class="ep-btn" href="./episode.html?anime=${anime_id}&episode=${ep_num}">${ep_num}</a>`;
     }
     document.getElementById("ephtmldiv").innerHTML = ephtml;
-    return total;
+    return eplist;
 }
 
 // Function to get selector btn
@@ -119,19 +111,26 @@ async function getSelectorBtn(url, current, totalep) {
         html = "";
     } else {
         if (current == 1) {
-            html = `<a class="btns" href="${url + (current + 1)
-                }"><button class="sbtn inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg ">Episode 2<i style="margin-left:10px; margin-right: auto;" class="fa fa-arrow-circle-right"></i></button></a>`;
+            html = `<a class="btns" href="${
+                url + (current + 1)
+            }"><button class="sbtn inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg ">Episode 2<i style="margin-left:10px; margin-right: auto;" class="fa fa-arrow-circle-right"></i></button></a>`;
         } else if (current == totalep) {
-            html = `<a class="btns" href="${url + (totalep - 1)
-                }"><button class="sbtn inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg "><i class="fa fa-arrow-circle-left"></i>Episode ${totalep - 1
-                }</button></a>`;
+            html = `<a class="btns" href="${
+                url + (totalep - 1)
+            }"><button class="sbtn inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg "><i class="fa fa-arrow-circle-left"></i>Episode ${
+                totalep - 1
+            }</button></a>`;
         } else {
-            html = `<a class="btns" href="${url + (current - 1)
-                }"><button class="sbtn inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg "><i class="fa fa-arrow-circle-left"></i>Episode ${current - 1
-                }</button></a>`;
-            html += `<a class="btns" href="${url + (current + 1)
-                }"><button class="sbtn inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg ">Episode ${current + 1
-                }<i style="margin-left:10px; margin-right: auto;" class="fa fa-arrow-circle-right"></i></button></a>`;
+            html = `<a class="btns" href="${
+                url + (current - 1)
+            }"><button class="sbtn inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg "><i class="fa fa-arrow-circle-left"></i>Episode ${
+                current - 1
+            }</button></a>`;
+            html += `<a class="btns" href="${
+                url + (current + 1)
+            }"><button class="sbtn inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg ">Episode ${
+                current + 1
+            }<i style="margin-left:10px; margin-right: auto;" class="fa fa-arrow-circle-right"></i></button></a>`;
         }
 
         document.getElementsByClassName("selector")[0].innerHTML = html;
@@ -140,7 +139,9 @@ async function getSelectorBtn(url, current, totalep) {
 
 // Function to get download links
 async function getDownloadLinks(anime, episode) {
-    const data = await getJson(dlapi + anime + "-episode-" + episode);
+    const data = (await getJson(dlapi + anime + "-episode-" + episode))[
+        "results"
+    ];
     let html = "";
 
     for (const [key, value] of Object.entries(data)) {
@@ -158,36 +159,43 @@ if (urlParams.get("anime") == null || urlParams.get("episode") == null) {
     window.location = "./index.html";
 }
 
-document.documentElement.innerHTML =
-    document.documentElement.innerHTML.replaceAll(
-        "{{ title }}",
-        sentenceCase(urlParams.get("anime")) +
-        " - Episode " +
-        urlParams.get("episode")
-    );
-
 // Running functions
-getEpisode(urlParams.get("anime"), urlParams.get("episode")).then((success) => {
-    console.log("Episode loaded");
-    getServers(urlParams.get("anime"), urlParams.get("episode"), success).then(
-        (data) => {
-            console.log("Servers loaded");
-        }
-    );
-});
 
-getEpList(urlParams.get("anime")).then((totalep) => {
-    console.log("Episodes loaded");
-    getSelectorBtn(
-        `./episode.html?anime=${urlParams.get("anime")}&episode=`,
-        urlParams.get("episode"),
-        totalep
-    ).then((data) => {
-        console.log("Selector btn loaded");
-        getDownloadLinks(urlParams.get("anime"), urlParams.get("episode")).then(
-            (data) => {
-                console.log("Download links loaded");
-            }
-        );
+async function loadEpisodeData(data) {
+    data = data["results"];
+    const name = data["name"];
+    const episodes = data["episodes"];
+    const stream = data["stream"];
+    const servers = data["servers"];
+
+    try {
+        loadVideo(name, stream).then(() => {
+            console.log("Video loaded");
+            loadServers(servers, true).then(() => {
+                console.log("Servers loaded");
+            });
+        });
+    } catch (err) {
+        loadServers(servers, false).then(() => {
+            console.log("Servers loaded");
+        });
+    }
+}
+
+getJson(
+    episodeapi + urlParams.get("anime") + "-episode-" + urlParams.get("episode")
+).then((data) => {
+    loadEpisodeData(data).then(() => {
+        getEpList(urlParams.get("anime")).then((eplist) => {
+            console.log("Episode list loaded");
+
+            getSelectorBtn(
+                "./episode.html?anime=" + urlParams.get("anime") + "&episode=",
+                urlParams.get("episode"),
+                eplist.length
+            ).then(() => {
+                console.log("Selector btn loaded");
+            });
+        });
     });
 });
