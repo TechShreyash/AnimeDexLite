@@ -1,3 +1,5 @@
+![AnimeDex - Watch High Quality Anime Online (1)](https://github.com/TechShreyash/AnimeDexLite/assets/82265247/799642dd-5e6d-440b-88e7-df4361d6df70)
+
 # AnimeDexLite v2.0
 
 -   Pure html, css and js version of AnimeDex
