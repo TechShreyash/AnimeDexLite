@@ -98,7 +98,7 @@ async function getRecentAnimes(page = 1) {
     for (let pos = 0; pos < data.length; pos++) {
         let anime = data[pos];
         let title = anime["title"];
-        let id = anime["id"];
+        let id = anime["id"].split('-episode-')[0];
         let url = "./anime.html?anime=" + id;
         let image = anime["image"];
         let ep = anime["episode"].split(" ")[1];
