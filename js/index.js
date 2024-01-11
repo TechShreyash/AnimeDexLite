@@ -1,5 +1,6 @@
 // Api urls
 
+const proxy = "https://proxy.techzbots1.workers.dev/?u=";
 const IndexApi = "https://api.anime-dex.workers.dev/home";
 const recentapi = "https://api.anime-dex.workers.dev/recent/";
 
@@ -92,13 +93,13 @@ async function getPopularAnimes(data) {
 }
 // Adding popular animes (popular animes from gogoanime)
 async function getRecentAnimes(page = 1) {
-    const data = (await getJson(recentapi + page))["results"];
+    const data = (await getJson(proxy + recentapi + page))["results"];
     let RECENT_HTML = "";
 
     for (let pos = 0; pos < data.length; pos++) {
         let anime = data[pos];
         let title = anime["title"];
-        let id = anime["id"].split('-episode-')[0];
+        let id = anime["id"].split("-episode-")[0];
         let url = "./anime.html?anime=" + id;
         let image = anime["image"];
         let ep = anime["episode"].split(" ")[1];
@@ -216,7 +217,7 @@ window.addEventListener("scroll", () => {
 
 // Running functions
 
-getJson(IndexApi).then((data) => {
+getJson(proxy + IndexApi).then((data) => {
     data = data["results"];
     const anilistTrending = data["anilistTrending"];
     const gogoanimePopular = data["gogoPopular"];

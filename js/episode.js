@@ -1,3 +1,4 @@
+const proxy = "https://proxy.techzbots1.workers.dev/?u=";
 const animeapi = "https://api.anime-dex.workers.dev/anime/";
 const episodeapi = "https://api.anime-dex.workers.dev/episode/";
 const dlapi = "https://api.anime-dex.workers.dev/download/";
@@ -88,7 +89,7 @@ function showDownload() {
 
 // Function to get episode list
 async function getEpList(anime_id) {
-    const data = (await getJson(animeapi + anime_id))["results"];
+    const data = (await getJson(proxy + animeapi + anime_id))["results"];
     const eplist = data["episodes"];
     let ephtml = "";
 
@@ -139,7 +140,7 @@ async function getSelectorBtn(url, current, totalep) {
 
 // Function to get download links
 async function getDownloadLinks(anime, episode) {
-    const data = (await getJson(dlapi + anime + "-episode-" + episode))[
+    const data = (await getJson(proxy + dlapi + anime + "-episode-" + episode))[
         "results"
     ];
     let html = "";
@@ -186,7 +187,11 @@ async function loadEpisodeData(data) {
 }
 
 getJson(
-    episodeapi + urlParams.get("anime") + "-episode-" + urlParams.get("episode")
+    proxy +
+        episodeapi +
+        urlParams.get("anime") +
+        "-episode-" +
+        urlParams.get("episode")
 ).then((data) => {
     loadEpisodeData(data).then(() => {
         getEpList(urlParams.get("anime")).then((eplist) => {
