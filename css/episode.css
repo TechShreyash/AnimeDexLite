@@ -148,15 +148,15 @@ a {
 
 body,
 html {
+    overflow-x: hidden;
+    width: 100svw;
     height: 100%;
-    width: 100%;
     padding: 0px;
     margin: 0px;
     background-color: #14151a;
     background-image: none;
     display: block;
     height: fit-content;
-    width: 100vw;
 }
 
 html {
@@ -1806,6 +1806,7 @@ h2 {
 }
 
 #load img {
-    width: 5%;
-    min-width: 35px;
+    width: 10%;
+    min-width: 40px;
+    border: none;
 }

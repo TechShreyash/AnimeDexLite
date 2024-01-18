@@ -1,5 +1,8 @@
 html,
 body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
     background-color: #282828;
 }
 
@@ -183,6 +186,7 @@ h1 {
 #watchh {
     margin: 30px 0px 20px 0px;
 }
+
 ::-webkit-scrollbar {
     width: 5px;
 }
@@ -198,6 +202,7 @@ h1 {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
 @media only screen and (min-width: 600px) {
     h1 {
         font-size: 28px;
@@ -476,6 +481,7 @@ h2 {
     height: fit-content;
     width: 70%;
 }
+
 .extra1 {
     line-height: 25px;
 }
@@ -868,8 +874,9 @@ h2 {
 }
 
 #load img {
-    width: 5%;
-    min-width: 35px;
+    width: 10%;
+    min-width: 40px;
+    border: none;
 }
 
 @keyframes fade {
