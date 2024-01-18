@@ -5,12 +5,17 @@ const dlapi = "https://api.anime-dex.workers.dev/download/";
 
 // Usefull functions
 
-async function getJson(url) {
+async function getJson(url, errCount = 0) {
+    if (errCount > 5) {
+        return;
+    }
+
     try {
         const response = await fetch(url);
         return await response.json();
     } catch (errors) {
         console.error(errors);
+        return getJson(url, errCount + 1);
     }
 }
 
