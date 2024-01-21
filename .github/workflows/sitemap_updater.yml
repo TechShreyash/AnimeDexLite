@@ -1,4 +1,4 @@
-name: Send Updater
+name: Sitemap Updater
 
 on:
     schedule:

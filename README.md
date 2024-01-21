@@ -31,6 +31,13 @@
 
 -   Checkout [AnimeDexApi](https://github.com/TechShreyash/CloudflareWorker/tree/main/animedexapi)
 
+### Generate Sitemap For SEO (Automatically)
+
+1. Fork This Repo
+2. Edit `utils/sitemapgen.py` file and replace `https://animedex.pages.dev` with your domain at line 2
+3. Now your sitemap will be automatically generated and updated every week
+> You can also generate sitemap manually by running github action named `Sitemap Updater`
+
 ### Join For Latest Updates
 
 [![Telegram Channel](https://img.shields.io/static/v1?label=Join&message=Telegram%20Channel&color=blueviolet&style=for-the-badge&logo=telegram&logoColor=violet)](https://telegram.me/TechZBots) [![Telegram Group](https://img.shields.io/static/v1?label=Join&message=Telegram%20Group&color=blueviolet&style=for-the-badge&logo=telegram&logoColor=violet)](https://telegram.me/TechZBots_Support)
