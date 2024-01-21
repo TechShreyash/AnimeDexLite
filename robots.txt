@@ -12,3 +12,5 @@ User-agent: *
 Allow: /
 Disallow: /embed.html
 Disallow: /embed
+
+Sitemap: https://animedex.pages.dev/recent_sitemap.xml

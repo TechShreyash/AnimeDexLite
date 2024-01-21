@@ -28,8 +28,7 @@ def sitemap_gen(filename, priority, data):
     today = datetime.today().strftime("%Y-%m-%d")
 
     for link in data:
-        text += f"""
-        <url>
+        text += f"""<url>
             <loc>{link}</loc>
             <lastmod>{today}</lastmod>
             <priority>{priority}</priority>
@@ -37,11 +36,11 @@ def sitemap_gen(filename, priority, data):
         """
 
     text += "</urlset>"
-    with open("./sitemap/" + filename, "w") as f:
+    with open(filename, "w") as f:
         f.write(text)
 
 
 if __name__ == "__main__":
     print("Generating sitemap for recent anime...")
     data = get_recent_anime()
-    sitemap_gen("recent.xml", 0.9, data)
+    sitemap_gen("recent_sitemap.xml", 0.9, data)
