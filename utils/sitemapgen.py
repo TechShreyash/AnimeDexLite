@@ -21,8 +21,7 @@ def get_recent_anime():
 
 
 def sitemap_gen(filename, priority, data):
-    text = """
-<?xml version="1.0" encoding="utf-8"?>
+    text = """<?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     """
 
