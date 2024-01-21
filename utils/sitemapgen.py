@@ -49,4 +49,4 @@ def sitemap_gen(filename, priority, frequency, data):
 if __name__ == "__main__":
     print("Generating sitemap for recent anime...")
     data = get_recent_anime()
-    sitemap_gen("recent.xml", 1, "weekly", data)
+    sitemap_gen("recent.xml", 0.9, "weekly", data)
