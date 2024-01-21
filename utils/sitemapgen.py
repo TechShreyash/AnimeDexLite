@@ -20,13 +20,10 @@ def get_recent_anime():
     return animes
 
 
-def sitemap_gen(filename, priority, frequency, data):
-    text = """<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+def sitemap_gen(filename, priority, data):
+    text = """
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     """
 
     today = datetime.today().strftime("%Y-%m-%d")
@@ -35,6 +32,8 @@ def sitemap_gen(filename, priority, frequency, data):
         text += f"""
         <url>
             <loc>{link}</loc>
+            <lastmod>{today}</lastmod>
+            <priority>{priority}</priority>
         </url>
         """
 
@@ -46,4 +45,4 @@ def sitemap_gen(filename, priority, frequency, data):
 if __name__ == "__main__":
     print("Generating sitemap for recent anime...")
     data = get_recent_anime()
-    sitemap_gen("recent.xml", 0.9, "weekly", data)
+    sitemap_gen("recent.xml", 0.9, data)
