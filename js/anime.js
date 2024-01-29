@@ -8,7 +8,7 @@ const recommendationsapi = "https://api.anime-dex.workers.dev/recommendations/";
 
 async function getJson(url, errCount = 0) {
     if (errCount > 5) {
-        return;
+        throw `Too many errors while fetching ${url}`;
     }
 
     try {
@@ -180,12 +180,22 @@ if (urlParams.get("anime") == null) {
 }
 
 //Running functions
-getJson(proxy + animeapi + urlParams.get("anime")).then((data) => {
-    data = data["results"];
 
-    if (data.source == "gogoanime") {
-        loadAnimeFromGogo(data);
-    } else if (data.source == "anilist") {
-        loadAnimeFromAnilist(data);
+async function loadData() {
+    try {
+        let data = await getJson(proxy + animeapi + urlParams.get("anime"));
+        data = data["results"];
+
+        if (data.source == "gogoanime") {
+            loadAnimeFromGogo(data);
+        } else if (data.source == "anilist") {
+            loadAnimeFromAnilist(data);
+        }
+    } catch (err) {
+        document.getElementById("error-page").style.display = "block";
+        document.getElementById("load").style.display = "none";
+        document.getElementById("error-desc").innerHTML = err;
     }
-});
+}
+
+loadData();

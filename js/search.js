@@ -5,7 +5,7 @@ const searchapi = "https://api.anime-dex.workers.dev/search/";
 
 async function getJson(url, errCount = 0) {
     if (errCount > 5) {
-        return;
+        throw `Too many errors while fetching ${url}`;
     }
 
     try {
@@ -52,6 +52,10 @@ async function SearchAnime(query, page = 1) {
     const loader = document.getElementById("load");
     let html = "";
 
+    if (animes.length == 0) {
+        throw "No results found";
+    }
+
     for (let i = 0; i < animes.length; i++) {
         const anime = animes[i];
         if (anime["title"].toLowerCase().includes("dub")) {
@@ -60,17 +64,14 @@ async function SearchAnime(query, page = 1) {
             anime["subOrDub"] = "SUB";
         }
 
-        html += `<a href="./anime.html?anime=${
-            anime["id"]
-        }"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime[
-            "subOrDub"
-        ].toUpperCase()}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${
-            anime["img"]
-        }"> </div><div class="la-details"> <h3>${sentenceCase(
-            anime["title"]
-        )}</h3> <div id="extra"> <span>${
-            anime["releaseDate"]
-        }</span> </div></div></div></a>`;
+        html += `<a href="./anime.html?anime=${anime["id"]
+            }"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime[
+                "subOrDub"
+            ].toUpperCase()}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${anime["img"]
+            }"> </div><div class="la-details"> <h3>${sentenceCase(
+                anime["title"]
+            )}</h3> <div id="extra"> <span>${anime["releaseDate"]
+            }</span> </div></div></div></a>`;
     }
     contentdiv.innerHTML += html;
 
@@ -90,12 +91,6 @@ if (query == null) {
 
 document.getElementById("latest").innerHTML = `Search Results: ${query}`;
 
-SearchAnime(query, page).then((data) => {
-    hasNextPage = data;
-    page += 1;
-    RefreshLazyLoader();
-    console.log("Search animes loaded");
-});
 
 // Load more results on scroll
 window.addEventListener("scroll", () => {
@@ -113,3 +108,20 @@ window.addEventListener("scroll", () => {
         }
     }
 });
+
+async function loadData() {
+    try {
+        const data = await SearchAnime(query, page)
+        hasNextPage = data;
+        page += 1;
+        RefreshLazyLoader();
+        console.log("Search animes loaded");
+
+    } catch (err) {
+        document.getElementById("main-section").style.display = "none";
+        document.getElementById("error-page").style.display = "block";
+        document.getElementById("error-desc").innerHTML = err;
+    }
+}
+
+loadData();
