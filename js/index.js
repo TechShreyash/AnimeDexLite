@@ -211,7 +211,7 @@ function loadAnimes() {
 
 window.addEventListener("scroll", () => {
     if (
-        window.scrollY + window.innerHeight >=
+        window.scrollY + window.innerHeight >= document.documentElement.scrollHeight
     ) {
         loadAnimes();
     }
