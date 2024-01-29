@@ -6,7 +6,7 @@ const dlapi = "https://api.anime-dex.workers.dev/download/";
 // Usefull functions
 
 async function getJson(url, errCount = 0) {
-    if (errCount > 5) {
+    if (errCount > 2) {
         throw `Too many errors while fetching ${url}`;
     }
 

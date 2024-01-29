@@ -4,7 +4,7 @@ const searchapi = "https://api.anime-dex.workers.dev/search/";
 // Usefull functions
 
 async function getJson(url, errCount = 0) {
-    if (errCount > 5) {
+    if (errCount > 2) {
         throw `Too many errors while fetching ${url}`;
     }
 
@@ -67,7 +67,7 @@ async function SearchAnime(query, page = 1) {
         html += `<a href="./anime.html?anime=${anime["id"]
             }"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime[
                 "subOrDub"
-            ].toUpperCase()}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${anime["img"]
+            ].toUpperCase()}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="./static/loading1.gif" data-src="${anime["img"]
             }"> </div><div class="la-details"> <h3>${sentenceCase(
                 anime["title"]
             )}</h3> <div id="extra"> <span>${anime["releaseDate"]

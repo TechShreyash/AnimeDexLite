@@ -7,7 +7,7 @@ const recentapi = "https://api.anime-dex.workers.dev/recent/";
 // Usefull functions
 
 async function getJson(url, errCount = 0) {
-    if (errCount > 5) {
+    if (errCount > 2) {
         return;
     }
 
@@ -62,9 +62,8 @@ async function getTrendingAnimes(data) {
             poster = anime["coverImage"]["extraLarge"];
         }
 
-        SLIDER_HTML += `<div class="mySlides fade"> <div class="data-slider"> <p class="spotlight">#${
-            pos + 1
-        } Spotlight</p><h1>${title}</h1> <div class="extra1"> <span class="year"><i class="fa fa-play-circle"></i>${type}</span> <span class="year year2"><i class="fa fa-calendar"></i>${status}</span> <span class="cbox cbox1">${genres}</span> <span class="cbox cbox2">HD</span> </div><p class="small-synop">${description}</p><div id="watchh"> <a href="${url}" class="watch-btn"> <i class="fa fa-play-circle"></i> Watch Now </a> <a href="${url}" class="watch-btn watch-btn2"> <i class="fa fa-info-circle"></i> Details<i class="fa fa-angle-right"></i> </a> </div></div><div class="shado"> <a href="${url}"></a> </div><img src="${poster}"> </div>`;
+        SLIDER_HTML += `<div class="mySlides fade"> <div class="data-slider"> <p class="spotlight">#${pos + 1
+            } Spotlight</p><h1>${title}</h1> <div class="extra1"> <span class="year"><i class="fa fa-play-circle"></i>${type}</span> <span class="year year2"><i class="fa fa-calendar"></i>${status}</span> <span class="cbox cbox1">${genres}</span> <span class="cbox cbox2">HD</span> </div><p class="small-synop">${description}</p><div id="watchh"> <a href="${url}" class="watch-btn"> <i class="fa fa-play-circle"></i> Watch Now </a> <a href="${url}" class="watch-btn watch-btn2"> <i class="fa fa-info-circle"></i> Details<i class="fa fa-angle-right"></i> </a> </div></div><div class="shado"> <a href="${url}"></a> </div><img src="${poster}"> </div>`;
     }
 
     document.querySelector(".slideshow-container").innerHTML =
@@ -89,9 +88,8 @@ async function getPopularAnimes(data) {
             subOrDub = "SUB";
         }
 
-        POPULAR_HTML += `<a href="${url}"><div class="poster la-anime"> <div id="shadow1" class="shadow"><div class="dubb"># ${
-            pos + 1
-        }</div> <div class="dubb dubb2">${subOrDub}</div> </div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${image}"> </div><div class="la-details"> <h3>${title}</h3></div></div></a>`;
+        POPULAR_HTML += `<a href="${url}"><div class="poster la-anime"> <div id="shadow1" class="shadow"><div class="dubb"># ${pos + 1
+            }</div> <div class="dubb dubb2">${subOrDub}</div> </div><div id="shadow2" class="shadow"> <img class="lzy_img" src="./static/loading1.gif" data-src="${image}"> </div><div class="la-details"> <h3>${title}</h3></div></div></a>`;
     }
 
     document.querySelector(".popularg").innerHTML = POPULAR_HTML;
@@ -115,7 +113,7 @@ async function getRecentAnimes(page = 1) {
             subOrDub = "SUB";
         }
 
-        RECENT_HTML += `<a href="${url}"><div class="poster la-anime"> <div id="shadow1" class="shadow"><div class="dubb">${subOrDub}</div><div class="dubb dubb2">EP ${ep}</div> </div><div id="shadow2" class="shadow"> <img class="lzy_img" src="https://cdn.jsdelivr.net/gh/TechShreyash/AnimeDex@main/static/img/loading.gif" data-src="${image}"> </div><div class="la-details"> <h3>${title}</h3></div></div></a>`;
+        RECENT_HTML += `<a href="${url}"><div class="poster la-anime"> <div id="shadow1" class="shadow"><div class="dubb">${subOrDub}</div><div class="dubb dubb2">EP ${ep}</div> </div><div id="shadow2" class="shadow"> <img class="lzy_img" src="./static/loading1.gif" data-src="${image}"> </div><div class="la-details"> <h3>${title}</h3></div></div></a>`;
     }
 
     document.querySelector(".recento").innerHTML += RECENT_HTML;
@@ -214,7 +212,6 @@ function loadAnimes() {
 window.addEventListener("scroll", () => {
     if (
         window.scrollY + window.innerHeight >=
-        document.documentElement.scrollHeight
     ) {
         loadAnimes();
     }
@@ -224,8 +221,8 @@ window.addEventListener("scroll", () => {
 
 getJson(proxy + IndexApi).then((data) => {
     data = data["results"];
-    const anilistTrending = data["anilistTrending"];
-    const gogoanimePopular = data["gogoPopular"];
+    const anilistTrending = shuffle(data["anilistTrending"]);
+    const gogoanimePopular = shuffle(data["gogoPopular"]);
 
     getTrendingAnimes(anilistTrending).then((data) => {
         RefreshLazyLoader();
