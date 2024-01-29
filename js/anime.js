@@ -93,7 +93,7 @@ async function loadAnimeFromGogo(data) {
         data["episodes"][0][1].split("-episode-")[0] +
         "&episode=" +
         data["episodes"][0][0];
-    const anime_title = data["title"];
+    const anime_title = data["name"];
 
     console.log("Anime Info loaded");
     RefreshLazyLoader();
@@ -160,6 +160,9 @@ async function getEpList(anime_id, total) {
 
 // Function to get anime recommendations
 async function getRecommendations(anime_title) {
+    document.getElementsByClassName("sload")[0].style.display = 'block';
+
+    anime_title = anime_title.replaceAll(" ", "+");
     const data = await getJson(proxy + recommendationsapi + anime_title);
     const recommendations = data["results"];
     let rechtml = "";
@@ -170,6 +173,7 @@ async function getRecommendations(anime_title) {
         rechtml += `<a href="./anime.html?anime=${title}"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime["meanScore"]} / 100</div><div class="dubb dubb2">${anime["format"]}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="./static/loading1.gif" data-src="${anime["coverImage"]["large"]}"> </div><div class="la-details"> <h3>${title}</h3> <div id="extra"> <span>${anime["status"]}</span> <span class="dot"></span> <span>EP ${anime["episodes"]}</span> </div></div></div></a>`;
     }
     document.getElementById("latest2").innerHTML = rechtml;
+    document.getElementsByClassName("sload")[0].style.display = 'none';
 }
 
 const queryString = window.location.search;
