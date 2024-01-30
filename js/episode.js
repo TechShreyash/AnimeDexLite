@@ -187,7 +187,6 @@ async function loadEpisodeData(data) {
 async function loadData() {
     try {
         let data = await getJson(
-            proxy +
             episodeapi +
             urlParams.get("anime") +
             "-episode-" +
