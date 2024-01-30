@@ -1,4 +1,5 @@
-const proxy = "https://proxy.techzbots1.workers.dev/?u=";
+// Api urls
+
 const searchapi = "https://api.anime-dex.workers.dev/search/";
 
 // Usefull functions
@@ -45,7 +46,7 @@ let hasNextPage = true;
 
 // Search function to get anime from gogo
 async function SearchAnime(query, page = 1) {
-    const data = await getJson(proxy + searchapi + query + "?page=" + page);
+    const data = await getJson(searchapi + query + "?page=" + page);
 
     const animes = data["results"];
     const contentdiv = document.getElementById("latest2");

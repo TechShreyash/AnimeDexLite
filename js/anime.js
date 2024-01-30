@@ -1,6 +1,5 @@
 // Api urls
 
-const proxy = "https://proxy.techzbots1.workers.dev/?u=";
 const animeapi = "https://api.anime-dex.workers.dev/anime/";
 const recommendationsapi = "https://api.anime-dex.workers.dev/recommendations/";
 
@@ -163,7 +162,7 @@ async function getRecommendations(anime_title) {
     document.getElementsByClassName("sload")[0].style.display = 'block';
 
     anime_title = anime_title.replaceAll(" ", "+");
-    const data = await getJson(proxy + recommendationsapi + anime_title);
+    const data = await getJson(recommendationsapi + anime_title);
     const recommendations = data["results"];
     let rechtml = "";
 
@@ -187,7 +186,7 @@ if (urlParams.get("anime") == null) {
 
 async function loadData() {
     try {
-        let data = await getJson(proxy + animeapi + urlParams.get("anime"));
+        let data = await getJson(animeapi + urlParams.get("anime"));
         data = data["results"];
 
         if (data.source == "gogoanime") {
