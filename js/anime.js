@@ -198,6 +198,7 @@ async function loadData() {
         document.getElementById("error-page").style.display = "block";
         document.getElementById("load").style.display = "none";
         document.getElementById("error-desc").innerHTML = err;
+        console.error(err);
     }
 }
 

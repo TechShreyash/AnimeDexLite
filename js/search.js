@@ -122,6 +122,7 @@ async function loadData() {
         document.getElementById("main-section").style.display = "none";
         document.getElementById("error-page").style.display = "block";
         document.getElementById("error-desc").innerHTML = err;
+        console.error(err);
     }
 }
 
