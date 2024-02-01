@@ -2,34 +2,35 @@
 
 <h1 align="center"><b>AnimeDexLite v2.0</b></h1>
 
--   Pure html, css and js version of AnimeDex
--   Lite Weight, Fast and Free
--   Easy to deploy
--   Powered By Blazing Fast [AnimeDexApi](https://api.anime-dex.workers.dev)
+- Pure html, css and js version of AnimeDex
+- Lite Weight, Fast and Free
+- Easy to deploy
+- Powered By Blazing Fast [AnimeDexApi](https://api.anime-dex.workers.dev)
 
 ## Demo
 
--   https://animedex.pages.dev
--   https://animedex-lite.netlify.app
--   https://techshreyash.github.io/AnimeDexLite
--   https://animedexlite.vercel.app
--   https://animedexlite.onrender.com
+- https://animedex.pages.dev
+- https://animedex-lite.netlify.app
+- https://techshreyash.github.io/AnimeDexLite
+- https://animedexlite.vercel.app
+- https://animedexlite.onrender.com
 
 ## Host Your Own (Free Hostings)
 
--   Cloudflare, Netlify, Github Pages, Vercel, Render
--   And Many More (Search On Google - Free Static Website Hosting)
+- Cloudflare, Netlify, Github Pages, Vercel, Render
+- And Many More (Search On Google - Free Static Website Hosting)
 
 > You can easily host on any free hosting
 
 ## Run On Your Pc
 
--   Download this repo
--   Open `index.html` file in browser
+- Download this repo
+- Open `index.html` file in browser
 
-## Host Your Own Api (Recommended)
+## Deploy Api & Proxy (Recommended)
 
--   Checkout [AnimeDexApi](https://github.com/TechShreyash/CloudflareWorker/tree/main/animedexapi)
+- [AnimeDexApi](https://github.com/TechShreyash/CloudflareWorker/tree/main/animedexapi) - Api to get all anime data
+- [AnimeDexProxy](https://github.com/TechShreyash/CloudflareWorker/tree/main/animedexapi) - Proxy to bypass cors errors
 
 ### Join For Latest Updates
 
