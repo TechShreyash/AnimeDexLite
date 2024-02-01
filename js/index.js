@@ -14,9 +14,9 @@ function getApiServer() {
 
 // Usefull functions
 
-async function getJson(url, errCount = 0) {
+async function getJson(path, errCount = 0) {
     const ApiServer = getApiServer();
-    url = ApiServer + url;
+    let url = ApiServer + path;
 
     if (errCount > 2) {
         return;

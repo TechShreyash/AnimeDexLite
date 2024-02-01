@@ -14,9 +14,9 @@ function getApiServer() {
 
 // Usefull functions
 
-async function getJson(url, errCount = 0) {
+async function getJson(path, errCount = 0) {
     const ApiServer = getApiServer();
-    url = ApiServer + url;
+    let url = ApiServer + path;
 
     if (errCount > 2) {
         throw `Too many errors while fetching ${url}`;
@@ -115,14 +115,8 @@ async function loadAnimeFromGogo(data) {
     console.log("Anime Info loaded");
     RefreshLazyLoader();
 
-    getEpList(data["id"], data["episodes"]).then((data) => {
-        console.log("Episode list loaded");
-
-        getRecommendations(anime_title).then((data) => {
-            RefreshLazyLoader();
-            console.log("Anime Recommendations loaded");
-        });
-    });
+    await getEpList(data["episodes"])
+    await getRecommendations(anime_title)
 }
 
 // Function to get anime info from anilist search
@@ -165,7 +159,7 @@ async function loadAnimeFromAnilist(data) {
 }
 
 // Function to get episode list
-async function getEpList(anime_id, total) {
+async function getEpList(total) {
     let ephtml = "";
 
     for (let i = 0; i < total.length; i++) {
@@ -173,6 +167,7 @@ async function getEpList(anime_id, total) {
         ephtml += `<a class="ep-btn" href="./episode.html?anime=${x[0]}&episode=${x[1]}">${x[1]}</a>`;
     }
     document.getElementById("ephtmldiv").innerHTML = ephtml;
+    console.log("Episode list loaded");
 }
 
 // Function to get anime recommendations
@@ -180,7 +175,15 @@ async function getRecommendations(anime_title) {
     document.getElementsByClassName("sload")[0].style.display = 'block';
 
     anime_title = anime_title.replaceAll(" ", "+");
-    const data = await getJson(recommendationsapi + anime_title);
+
+    try {
+        const data = await getJson(recommendationsapi + anime_title);
+    }
+    catch (err) {
+        document.getElementById('similar-div').style.display = 'none';
+        return
+    }
+
     const recommendations = data["results"];
     let rechtml = "";
 
