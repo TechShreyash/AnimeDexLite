@@ -15,6 +15,7 @@ function getApiServer() {
 // Usefull functions
 
 async function getJson(path, errCount = 0) {
+    console.log("Fetching " + path, errCount);
     const ApiServer = getApiServer();
     let url = ApiServer + path;
 
@@ -22,7 +23,7 @@ async function getJson(path, errCount = 0) {
         return;
     }
 
-    if (errCount = 1) {
+    if (errCount == 1) {
         // Retry fetch using proxy
         console.log("Retrying fetch using proxy");
         url = ProxyApi + url;
@@ -33,7 +34,7 @@ async function getJson(path, errCount = 0) {
         return await response.json();
     } catch (errors) {
         console.error(errors);
-        return getJson(url, errCount + 1);
+        return getJson(path, errCount + 1);
     }
 }
 

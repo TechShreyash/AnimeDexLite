@@ -22,7 +22,7 @@ async function getJson(path, errCount = 0) {
         throw `Too many errors while fetching ${url}`;
     }
 
-    if (errCount = 1) {
+    if (errCount == 1) {
         // Retry fetch using proxy
         console.log("Retrying fetch using proxy");
         url = ProxyApi + url;
@@ -176,8 +176,9 @@ async function getRecommendations(anime_title) {
 
     anime_title = anime_title.replaceAll(" ", "+");
 
+    let data;
     try {
-        const data = await getJson(recommendationsapi + anime_title);
+        data = await getJson(recommendationsapi + anime_title);
     }
     catch (err) {
         document.getElementById('similar-div').style.display = 'none';
@@ -194,6 +195,7 @@ async function getRecommendations(anime_title) {
     }
     document.getElementById("latest2").innerHTML = rechtml;
     document.getElementsByClassName("sload")[0].style.display = 'none';
+    console.log("Anime Recommendations loaded");
 }
 
 const queryString = window.location.search;

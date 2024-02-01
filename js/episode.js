@@ -23,7 +23,7 @@ async function getJson(path, errCount = 0) {
         throw `Too many errors while fetching ${url}`;
     }
 
-    if (errCount = 1) {
+    if (errCount == 1) {
         // Retry fetch using proxy
         console.log("Retrying fetch using proxy");
         url = ProxyApi + url;
