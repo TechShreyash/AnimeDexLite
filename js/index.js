@@ -15,7 +15,6 @@ function getApiServer() {
 // Usefull functions
 
 async function getJson(path, errCount = 0) {
-    console.log("Fetching " + path, errCount);
     const ApiServer = getApiServer();
     let url = ApiServer + path;
 
