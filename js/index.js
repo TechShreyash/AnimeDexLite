@@ -1,5 +1,6 @@
 // Api urls
 
+const ProxyApi = "https://proxy.techzbots1.workers.dev/?u="
 const IndexApi = "/home";
 const recentapi = "/recent/";
 
@@ -19,6 +20,12 @@ async function getJson(url, errCount = 0) {
 
     if (errCount > 2) {
         return;
+    }
+
+    if (errCount = 1) {
+        // Retry fetch using proxy
+        console.log("Retrying fetch using proxy");
+        url = ProxyApi + url;
     }
 
     try {
