@@ -203,36 +203,37 @@ function sleep(ms) {
 
 // To load more animes when scrolled to bottom
 let page = 2;
-let isLoading = 0;
-let errCount = 0;
-function loadAnimes() {
+let isLoading = false;
+
+async function loadAnimes() {
     try {
-        if (isLoading == 0) {
-            isLoading = 1;
-            getRecentAnimes(page).then((data) => {
-                RefreshLazyLoader();
-                console.log("Recent animes loaded");
-            });
+        if (isLoading == false) {
+            isLoading = true;
+            await getRecentAnimes(page)
+            RefreshLazyLoader();
+            console.log("Recent animes loaded");
             page += 1;
-            isLoading = 0;
-            errCount = 0;
+            isLoading = false;
         }
     } catch (error) {
-        isLoading = 0;
-        errCount += 1;
-        if (errCount < 5) {
-            setTimeout(loadAnimes(), 2000);
-        }
+        isLoading = false;
+        console.error(`Failed To Load Recent Animes Page : ${page}`);
+        page += 1;
     }
 }
 
-window.addEventListener("scroll", () => {
-    if (
-        window.scrollY + window.innerHeight >= document.documentElement.scrollHeight
-    ) {
+// Add a scroll event listener
+window.addEventListener('scroll', function () {
+    // Calculate how far the user has scrolled
+    const scrollPosition = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    if ((scrollPosition + (3 * windowHeight)) >= documentHeight) {
         loadAnimes();
     }
 });
+
 
 // Running functions
 

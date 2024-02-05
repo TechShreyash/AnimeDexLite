@@ -196,6 +196,7 @@ async function getRecommendations(anime_title) {
     document.getElementById("latest2").innerHTML = rechtml;
     document.getElementsByClassName("sload")[0].style.display = 'none';
     console.log("Anime Recommendations loaded");
+    RefreshLazyLoader();
 }
 
 const queryString = window.location.search;
@@ -217,6 +218,7 @@ async function loadData() {
         } else if (data.source == "anilist") {
             loadAnimeFromAnilist(data);
         }
+        RefreshLazyLoader();
     } catch (err) {
         document.getElementById("error-page").style.display = "block";
         document.getElementById("load").style.display = "none";
