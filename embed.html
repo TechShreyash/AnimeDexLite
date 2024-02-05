@@ -8,33 +8,77 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-AI2N32D+Ft5S0M6GHC+M9roOI5PLOPM4P0GwjWF+H+GJIMB8ofenlOKs85L6dkJyil6XjRO5A3dtxysIV+BZTg==" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/plyr@3/dist/plyr.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BHQX4066ZV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "G-BHQX4066ZV");
+    </script>
+
     <style type="text/css">
         body {
             background-color: #000;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
         }
 
         .container {
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden; 
         }
 
         video {
             width: 100%;
             height: 100%;
+            display: block;
+        }
+
+        .skip-buttons {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 10px;
+            z-index: 1;
+        }
+
+        .skip-button {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .skip-button i {
+            color: #000;
+        }
+
+        .skip-button:hover {
+            background-color: rgba(255, 255, 255, 0.8);
         }
     </style>
-
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js"></script>
-    <script src="https://unpkg.com/plyr@3"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BHQX4066ZV"></script>
-    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-BHQX4066ZV');</script>
 </head>
 
 <body>
     <div class="container">
         <video controls crossorigin playsinline></video>
+        <div class="skip-buttons">
+            <div class="skip-button" onclick="skipBack()"><i class="fas fa-backward"></i></div>
+            <div class="skip-button" onclick="skipForward()"><i class="fas fa-forward"></i></div>
+        </div>
     </div>
 
     <script>
@@ -62,11 +106,13 @@
                         onChange: (e) => updateQuality(e),
                     };
                     const player = new Plyr(video, defaultOptions);
+                    setupSkipButtons(player);
                 });
                 hls.attachMedia(video);
                 window.hls = hls;
             } else {
                 const player = new Plyr(video, defaultOptions);
+                setupSkipButtons(player);
             }
 
             function updateQuality(newQuality) {
@@ -76,6 +122,56 @@
                     }
                 });
             }
+
+            function setupSkipButtons(player) {
+                player.on("enterfullscreen", () => showSkipButtons(true));
+                player.on("exitfullscreen", () => showSkipButtons(false));
+
+                function skipBack() {
+                    player.currentTime -= 10;
+                }
+
+                function skipForward() {
+                    player.currentTime += 10;
+                }
+
+                function showSkipButtons(show) {
+                    const skipButtons = document.querySelector(".skip-buttons");
+                    skipButtons.style.display = show ? "flex" : "none";
+                }
+            }
+
+            //landscape on mobile devices
+            if (/Mobi/.test(navigator.userAgent) && window.orientation) {
+                function handleOrientationChange() {
+                    if (window.innerWidth < window.innerHeight) {
+                        // Portrait mode
+                        if (document.documentElement.requestFullscreen) {
+                            document.documentElement.requestFullscreen();
+                        } else if (document.documentElement.mozRequestFullScreen) {
+                            document.documentElement.mozRequestFullScreen();
+                        } else if (document.documentElement.webkitRequestFullscreen) {
+                            document.documentElement.webkitRequestFullscreen();
+                        } else if (document.documentElement.msRequestFullscreen) {
+                            document.documentElement.msRequestFullscreen();
+                        }
+                    }
+                }
+
+                window.addEventListener("orientationchange", handleOrientationChange);
+                handleOrientationChange();
+            }
+
+            let lastTapTime = 0;
+            video.addEventListener("click", () => {
+                const currentTime = new Date().getTime();
+                const tapDuration = currentTime - lastTapTime;
+                if (tapDuration < 300) {
+                    // Double-tap detected
+                    video.currentTime += 10;
+                }
+                lastTapTime = currentTime;
+            });
         });
     </script>
 </body>
