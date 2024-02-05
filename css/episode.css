@@ -1781,8 +1781,9 @@ h2 {
     font-family: "Roboto";
 }
 
-.container h1 {
+.container h6 {
     color: #721c24;
+    font-size: x-large;
 }
 
 .container p {
