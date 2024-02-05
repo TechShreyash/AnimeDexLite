@@ -11,37 +11,76 @@
     <style type="text/css">
         body {
             background-color: #000;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
         }
 
         .container {
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
         }
 
         video {
             width: 100%;
             height: 100%;
+            display: block;
+        }
+
+        .skip-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background-size: cover;
+            cursor: pointer;
+            z-index: 1;
+            opacity: 0.8;
+            transition: opacity 0.5s;
+        }
+
+        .skip-back {
+            left: 10px;
+            background-image: url('https://img.icons8.com/material/48/ffffff/rewind.png');
+        }
+
+        .skip-forward {
+            right: 10px;
+            background-image: url('https://img.icons8.com/material/48/ffffff/fast-forward.png');
         }
     </style>
 
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/plyr@3/dist/plyr.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js"></script>
     <script src="https://unpkg.com/plyr@3"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BHQX4066ZV"></script>
-    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-BHQX4066ZV');</script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "G-BHQX4066ZV");
+    </script>
 </head>
 
 <body>
     <div class="container">
-        <video controls crossorigin playsinline></video>
+        <video controls crossorigin playsinline onmousemove="showSkipButtons()" ontouchstart="showSkipButtons()" onmouseleave="hideSkipButtons()" ontouchend="hideSkipButtons()"></video>
+        <div class="skip-button skip-back" onclick="skipBack()"></div>
+        <div class="skip-button skip-forward" onclick="skipForward()"></div>
     </div>
 
     <script>
+        let skipButtonsVisible = false;
         params = new URLSearchParams(location.search);
         const source = params.get("url");
         document.addEventListener("DOMContentLoaded", () => {
             const video = document.querySelector("video");
+            const skipButtons = document.querySelectorAll(".skip-button");
 
             const defaultOptions = {
                 title: "{{ title }}",
@@ -62,11 +101,13 @@
                         onChange: (e) => updateQuality(e),
                     };
                     const player = new Plyr(video, defaultOptions);
+                    setupSkipButtons(player);
                 });
                 hls.attachMedia(video);
                 window.hls = hls;
             } else {
                 const player = new Plyr(video, defaultOptions);
+                setupSkipButtons(player);
             }
 
             function updateQuality(newQuality) {
@@ -76,6 +117,73 @@
                     }
                 });
             }
+
+            function setupSkipButtons(player) {
+                skipButtons.forEach(button => {
+                    button.addEventListener("click", () => {
+                        player.currentTime += (button.classList.contains('skip-back') ? -10 : 10);
+                    });
+                });
+            }
+
+            function skipBack() {
+                video.currentTime -= 10;
+            }
+
+            function skipForward() {
+                video.currentTime += 10;
+            }
+
+            function showSkipButtons() {
+                if (!skipButtonsVisible) {
+                    skipButtons.forEach(button => {
+                        button.style.opacity = "0.8";
+                    });
+                    skipButtonsVisible = true;
+                }
+                setTimeout(() => {
+                    hideSkipButtons();
+                }, 3000);
+            }
+
+            function hideSkipButtons() {
+                if (skipButtonsVisible) {
+                    skipButtons.forEach(button => {
+                        button.style.opacity = "0";
+                    });
+                    skipButtonsVisible = false;
+                }
+            }
+
+            //landscape on mobile devices
+            function handleOrientationChange() {
+                if (window.innerWidth < window.innerHeight) {
+                    // Portrait mode
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
+                    }
+                }
+            }
+
+            window.addEventListener("orientationchange", handleOrientationChange);
+            handleOrientationChange();
+
+            let lastTapTime = 0;
+            video.addEventListener("click", () => {
+                const currentTime = new Date().getTime();
+                const tapDuration = currentTime - lastTapTime;
+                if (tapDuration < 300) {
+                    // Double-tap detected
+                    video.currentTime += 10;
+                }
+                lastTapTime = currentTime;
+            });
         });
     </script>
 </body>
