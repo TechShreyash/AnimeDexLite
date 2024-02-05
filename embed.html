@@ -8,20 +8,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-AI2N32D+Ft5S0M6GHC+M9roOI5PLOPM4P0GwjWF+H+GJIMB8ofenlOKs85L6dkJyil6XjRO5A3dtxysIV+BZTg==" crossorigin="anonymous" />
-    <script src="https://cdn.jsdelivr.net/npm/plyr@3/dist/plyr.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BHQX4066ZV"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag("js", new Date());
-        gtag("config", "G-BHQX4066ZV");
-    </script>
-
     <style type="text/css">
         body {
             background-color: #000;
@@ -34,7 +20,6 @@
             width: 100vw;
             height: 100vh;
             position: relative;
-            overflow: hidden; 
         }
 
         video {
@@ -43,42 +28,48 @@
             display: block;
         }
 
-        .skip-buttons {
+        .skip-button {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0 10px;
+            width: 48px;
+            height: 48px;
+            background-size: cover;
+            cursor: pointer;
             z-index: 1;
         }
 
-        .skip-button {
-            background-color: rgba(255, 255, 255, 0.5);
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
+        .skip-back {
+            left: 10px;
+            background-image: url('https://img.icons8.com/material/48/ffffff/rewind.png');
         }
 
-        .skip-button i {
-            color: #000;
-        }
-
-        .skip-button:hover {
-            background-color: rgba(255, 255, 255, 0.8);
+        .skip-forward {
+            right: 10px;
+            background-image: url('https://img.icons8.com/material/48/ffffff/fast-forward.png');
         }
     </style>
+
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <script src="https://cdn.jsdelivr.net/npm/plyr@3/dist/plyr.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js"></script>
+    <script src="https://unpkg.com/plyr@3"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BHQX4066ZV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "G-BHQX4066ZV");
+    </script>
 </head>
 
 <body>
     <div class="container">
         <video controls crossorigin playsinline></video>
-        <div class="skip-buttons">
-            <div class="skip-button" onclick="skipBack()"><i class="fas fa-backward"></i></div>
-            <div class="skip-button" onclick="skipForward()"><i class="fas fa-forward"></i></div>
-        </div>
+        <div class="skip-button skip-back" onclick="skipBack()"></div>
+        <div class="skip-button skip-forward" onclick="skipForward()"></div>
     </div>
 
     <script>
@@ -86,6 +77,8 @@
         const source = params.get("url");
         document.addEventListener("DOMContentLoaded", () => {
             const video = document.querySelector("video");
+            const skipBackButton = document.querySelector(".skip-back");
+            const skipForwardButton = document.querySelector(".skip-forward");
 
             const defaultOptions = {
                 title: "{{ title }}",
@@ -124,43 +117,41 @@
             }
 
             function setupSkipButtons(player) {
-                player.on("enterfullscreen", () => showSkipButtons(true));
-                player.on("exitfullscreen", () => showSkipButtons(false));
-
-                function skipBack() {
+                skipBackButton.addEventListener("click", () => {
                     player.currentTime -= 10;
-                }
+                });
 
-                function skipForward() {
+                skipForwardButton.addEventListener("click", () => {
                     player.currentTime += 10;
-                }
+                });
+            }
 
-                function showSkipButtons(show) {
-                    const skipButtons = document.querySelector(".skip-buttons");
-                    skipButtons.style.display = show ? "flex" : "none";
-                }
+            function skipBack() {
+                video.currentTime -= 10;
+            }
+
+            function skipForward() {
+                video.currentTime += 10;
             }
 
             //landscape on mobile devices
-            if (/Mobi/.test(navigator.userAgent) && window.orientation) {
-                function handleOrientationChange() {
-                    if (window.innerWidth < window.innerHeight) {
-                        // Portrait mode
-                        if (document.documentElement.requestFullscreen) {
-                            document.documentElement.requestFullscreen();
-                        } else if (document.documentElement.mozRequestFullScreen) {
-                            document.documentElement.mozRequestFullScreen();
-                        } else if (document.documentElement.webkitRequestFullscreen) {
-                            document.documentElement.webkitRequestFullscreen();
-                        } else if (document.documentElement.msRequestFullscreen) {
-                            document.documentElement.msRequestFullscreen();
-                        }
+            function handleOrientationChange() {
+                if (window.innerWidth < window.innerHeight) {
+                    // Portrait mode
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.webkitRequestFullscreen) {
+                        document.documentElement.webkitRequestFullscreen();
+                    } else if (document.documentElement.msRequestFullscreen) {
+                        document.documentElement.msRequestFullscreen();
                     }
                 }
-
-                window.addEventListener("orientationchange", handleOrientationChange);
-                handleOrientationChange();
             }
+
+            window.addEventListener("orientationchange", handleOrientationChange);
+            handleOrientationChange();
 
             let lastTapTime = 0;
             video.addEventListener("click", () => {
