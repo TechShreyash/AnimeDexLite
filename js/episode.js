@@ -19,11 +19,12 @@ async function getJson(path, errCount = 0) {
     const ApiServer = getApiServer();
     let url = ApiServer + path;
 
+
     if (errCount > 2) {
         throw `Too many errors while fetching ${url}`;
     }
 
-    if (errCount == 1) {
+    if (errCount > 0) {
         // Retry fetch using proxy
         console.log("Retrying fetch using proxy");
         url = ProxyApi + url;
@@ -34,7 +35,7 @@ async function getJson(path, errCount = 0) {
         return await response.json();
     } catch (errors) {
         console.error(errors);
-        return getJson(url, errCount + 1);
+        return getJson(path, errCount + 1);
     }
 }
 
