@@ -1,16 +1,20 @@
 // Api urls
 
-const ProxyApi = "https://proxy.techzbots1.workers.dev/?u="
+const ProxyApi = "https://proxy.techzbots1.workers.dev/?u=";
 const animeapi = "/anime/";
 const episodeapi = "/episode/";
 const dlapi = "/download/";
 
 // Api Server Manager
 
-const AvailableServers = ['https://api1.anime-dex.workers.dev', 'https://api2.anime-dex.workers.dev', 'https://api3.anime-dex.workers.dev']
+const AvailableServers = [
+    "https://api1.anime-dex.workers.dev",
+    "https://api2.anime-dex.workers.dev",
+    "https://api3.anime-dex.workers.dev",
+];
 
 function getApiServer() {
-    return AvailableServers[Math.floor(Math.random() * AvailableServers.length)]
+    return AvailableServers[Math.floor(Math.random() * AvailableServers.length)];
 }
 
 // Usefull functions
@@ -18,7 +22,6 @@ function getApiServer() {
 async function getJson(path, errCount = 0) {
     const ApiServer = getApiServer();
     let url = ApiServer + path;
-
 
     if (errCount > 2) {
         throw `Too many errors while fetching ${url}`;
@@ -54,16 +57,19 @@ function capitalizeFirstLetter(string) {
 
 // Function to get m3u8 url of episode
 async function loadVideo(name, stream) {
+    const episodeid =
+        urlParams.get("anime") + "-episode-" + urlParams.get("episode");
+
     try {
         document.getElementById("ep-name").innerHTML = name;
         const serversbtn = document.getElementById("serversbtn");
 
         let url = stream["sources"][0]["file"];
-        serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn sactive" onclick="selectServer(this)" data-value="./embed.html?url=${url}">AD Free 1</a> </div>`;
+        serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn sactive" onclick="selectServer(this)" data-value="./embed.html?url=${url}&id=${episodeid}">AD Free 1</a> </div>`;
         document.getElementsByClassName("sactive")[0].click();
 
         url = stream["sources_bk"][0]["file"];
-        serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="./embed.html?url=${url}">AD Free 2</a> </div>`;
+        serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="./embed.html?url=${url}&id=${episodeid}">AD Free 2</a> </div>`;
 
         return true;
     } catch (err) {

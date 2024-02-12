@@ -9,30 +9,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <style type="text/css">
-    	html{
-	    width:100%;
-	    height:100%;
-	    background:#111;
-    	}
+        html {
+            width: 100%;
+            height: 100%;
+            background: #111;
+        }
+
         body {
-       	    margin:0px;
+            margin: 0px;
             background-color: #000;
-            width:100%;
-            height:100%;
-            display:flex;
-            justify-content:center;
-            align-items:center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        body > .plyr{
-        	width:100%;
-        	max-height:100%;
-        	aspect-ratio:16/9;
+
+        body>.plyr {
+            width: 100%;
+            max-height: 100%;
+            aspect-ratio: 16/9;
         }
+
         video {
-        	aspect-ratio:16/9;
-        	width:100%;
-        	height:100%;
-            object-fit:contain;
+            aspect-ratio: 16/9;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
     </style>
 
@@ -50,11 +53,17 @@
     <script>
         params = new URLSearchParams(location.search);
         const source = params.get("url");
+        const id = params.get("id");
+
+
         document.addEventListener("DOMContentLoaded", () => {
             const video = document.querySelector("video");
 
+            // Set poster image
+            video.setAttribute("data-poster", `https://thumb.anime-dex.workers.dev/get/${id}`);
+
             const defaultOptions = {
-                title: "{{ title }}",
+
             };
 
             if (Hls.isSupported()) {
@@ -86,6 +95,7 @@
                     }
                 });
             }
+
         });
     </script>
 </body>
