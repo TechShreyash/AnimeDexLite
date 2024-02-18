@@ -273,7 +273,6 @@ async function loadData() {
 // function for simple slide
 function scrollEpisodes(f) {
     var container = document.getElementById("ep-slider");
-    console.log('hellow')
     container.scrollLeft += f*175;
 }
 
