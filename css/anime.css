@@ -1053,7 +1053,7 @@ h2 {
     border-radius: 5px;
     border: 2px solid #ffffff;
     overflow: hidden;
-    scroll-snap-align: left;
+    scroll-snap-align:start;
 }
 
 .ep-slider {
