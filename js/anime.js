@@ -116,6 +116,7 @@ async function loadAnimeFromGogo(data) {
     console.log("Anime Info loaded");
     RefreshLazyLoader();
 
+    await getEpSlider(data["episodes"])
     await getEpList(data["episodes"])
     await getRecommendations(anime_title)
 }
@@ -157,6 +158,21 @@ async function loadAnimeFromAnilist(data) {
 
     RefreshLazyLoader();
     console.log("Anime Recommendations loaded");
+}
+
+// Function to get episode Slider
+async function getEpSlider(total) {
+    let ephtml = "";
+
+    for (let i = 0; i < total.length; i++) {
+        let episodeId = total[i][1]
+        let epNum = total[i][0]
+        ephtml += `<div class=ep-slide><img class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></div>`;
+    }
+    document.getElementById("ep-slider").innerHTML = ephtml;
+    document.getElementById("slider-main").style.display = "block";
+    RefreshLazyLoader();
+    console.log("Episode Slider loaded");
 }
 
 // Function to get episode list
