@@ -167,12 +167,37 @@ async function getEpSlider(total) {
     for (let i = 0; i < total.length; i++) {
         let episodeId = total[i][1]
         let epNum = total[i][0]
-        ephtml += `<div class=ep-slide><img class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></div>`;
+        ephtml += `<div class=ep-slide><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></div>`;
     }
     document.getElementById("ep-slider").innerHTML = ephtml;
     document.getElementById("slider-main").style.display = "block";
     RefreshLazyLoader();
     console.log("Episode Slider loaded");
+}
+
+// Retry image load
+function retryImageLoad(img) {
+    const ImageUrl = img.src
+    img.src = "./static/loading1.gif";
+
+    // load after 3 second
+
+    setTimeout(() => {
+
+        if (ImageUrl.includes("?t=")) {
+            const t = Number(ImageUrl.split("?t=")[1]) + 1;
+
+            // Retry 10 times
+            if (t < 5) {
+                img.src = ImageUrl.split("?t=")[0] + "?t=" + String(t);
+            }
+        }
+        else {
+            img.src = ImageUrl + "?t=1";
+        }
+
+    }, 3000);
+
 }
 
 // Function to get episode list
