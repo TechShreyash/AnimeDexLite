@@ -1,6 +1,8 @@
 html,
 body {
     background-color: #282828;
+    scroll-behavior: smooth;
+    user-select: none;
 }
 
 header {

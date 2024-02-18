@@ -242,6 +242,16 @@ async function getRecommendations(anime_title) {
     RefreshLazyLoader();
 }
 
+// Function to scroll episode slider
+function plusSlides(n) {
+    if (n === 1) {
+        document.getElementById("slider-carousel").scrollLeft += 600;
+    }
+    else if (n === -1) {
+        document.getElementById("slider-carousel").scrollLeft -= 600;
+    }
+}
+
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
