@@ -167,7 +167,8 @@ async function getEpSlider(total) {
     for (let i = 0; i < total.length; i++) {
         let episodeId = total[i][1]
         let epNum = total[i][0]
-        ephtml += `<div class=ep-slide><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></div>`;
+        let x = episodeId.split("-episode-");
+        ephtml += `<div class=ep-slide><a href="./episode.html?anime=${x[0]}&episode=${x[1]}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></a></div>`;
     }
     document.getElementById("ep-slider").innerHTML = ephtml;
     document.getElementById("slider-main").style.display = "block";
