@@ -171,7 +171,7 @@ async function getEpSlider(total) {
         ephtml += `<div class=ep-slide><a href="./episode.html?anime=${x[0]}&episode=${x[1]}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></a></div>`;
     }
     document.getElementById("ep-slider").innerHTML = ephtml;
-    document.getElementById("slider-main").style.display = "block";
+    document.getElementById("slider-main").style.display = "flex";
     RefreshLazyLoader();
     console.log("Episode Slider loaded");
 }
@@ -268,6 +268,13 @@ async function loadData() {
         document.getElementById("error-desc").innerHTML = err;
         console.error(err);
     }
+}
+
+// function for simple slide
+function scrollEpisodes(f) {
+    var container = document.getElementById("ep-slider");
+    console.log('hellow')
+    container.scrollLeft += f*175;
 }
 
 loadData();
