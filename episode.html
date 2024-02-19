@@ -53,8 +53,12 @@
         </div>
     </header>
 
+    <div id="load">
+        <img src="./static/loading2.gif" alt="Loading..." />
+    </div>
+
     <!-- Error Page -->
-    <div class=container id=error-page>
+    <div class=container id=error-page style="display: none;">
         <h6>Oops! Something Went Wrong</h6>
         <p>We're sorry, but it seems that something went wrong. Try refreshing the page or try again later.
         <p>If the issue persists, you can contact our <a
@@ -63,7 +67,7 @@
     </div>
     <!-- Error Page -->
 
-    <div id="main-section">
+    <div id="main-section" style="opacity: 0;display: none;">
         <section id="vid-sec">
             <div id="vid-div">
                 <div id="video">
@@ -109,13 +113,26 @@
                 </div>
             </div>
         </section>
+
         <section id="watch">
-            <div class="selector link-data">PROSLO</div>
             <div class="divo">
                 <h2>List Of Episodes:</h2>
-                <div id="ephtmldiv" class="divo2">EPISOS</div>
+                <!-- Episode Slider Start -->
+                <div id="slider-main" class="slider-main" style="display: none;">
+                    <div id="slider-carousel" class="slider-carousel">
+                        <div id="ep-slider" class="ep-slider"></div>
+                    </div>
+                    <a class="prev" onclick="plusSlides(-1)">❮</a>
+                    <a class="next" onclick="plusSlides(+1)">❯</a>
+                </div>
+                <!-- Episode Slider End -->
+
+                <!-- Episode List Start -->
+                <div id="ephtmldiv" class="divo2"></div>
+                <!-- Episode List End -->
             </div>
         </section>
+
     </div>
     <hr />
     <footer>
