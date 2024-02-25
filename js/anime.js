@@ -207,7 +207,7 @@ async function getEpList(total) {
 
     for (let i = 0; i < total.length; i++) {
         x = total[i][1].split("-episode-");
-        ephtml += `<a class="ep-btn" href="./episode.html?anime=${x[0]}&episode=${x[1]}">${x[1]}</a>`;
+        ephtml += `<a class="ep-btn" href="./episode.html?anime=${x[0]}&episode=${x[1]}">${x[1].replaceAll('-','.')}</a>`;
     }
     document.getElementById("ephtmldiv").innerHTML = ephtml;
     console.log("Episode list loaded");

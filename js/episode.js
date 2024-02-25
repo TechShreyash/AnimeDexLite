@@ -147,10 +147,21 @@ async function getDownloadLinks(anime, episode) {
     document.getElementById("dllinks").innerHTML = html;
 }
 
+function isShortNumber(n) {
+    let x = Number(String(n).replace('.', ''))
+
+    if (x < 20) {
+        return true
+    }
+    else {
+        return false
+    }
+
+}
 
 // Function to get episode Slider
 async function getEpSlider(total, current) {
-    current = Number(current);
+    current = Number(current.replace('-', '.'));
     let ephtml = "";
 
     for (let i = 0; i < total.length; i++) {
@@ -158,7 +169,7 @@ async function getEpSlider(total, current) {
         let epNum = total[i][0]
         let x = episodeId.split("-episode-");
         if (epNum == current) {
-            if (current < 20) {
+            if (isShortNumber(epNum)) {
                 ephtml += `<div class="ep-slide ep-slider-playing"><a href="./episode.html?anime=${x[0]}&episode=${x[1]}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum} - Playing</span></div></a></div>`;
             }
             else {
@@ -166,7 +177,12 @@ async function getEpSlider(total, current) {
             }
         }
         else {
-            ephtml += `<div class=ep-slide><a href="./episode.html?anime=${x[0]}&episode=${x[1]}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></a></div>`;
+            if (isShortNumber(epNum)) {
+                ephtml += `<div class=ep-slide><a href="./episode.html?anime=${x[0]}&episode=${x[1]}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></a></div>`;
+            }
+            else {
+                ephtml += `<div class=ep-slide><a href="./episode.html?anime=${x[0]}&episode=${x[1]}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Ep ${epNum}</span></div></a></div>`;
+            }
         }
     }
     document.getElementById("ep-slider").innerHTML = ephtml;
@@ -191,6 +207,7 @@ async function getEpSlider(total, current) {
 
 // Retry image load
 function retryImageLoad(img) {
+    return
     const ImageUrl = img.src
     img.src = "./static/loading1.gif";
 
