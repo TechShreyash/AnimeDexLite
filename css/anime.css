@@ -1141,7 +1141,7 @@ h2 {
 }
 
 .ep-divo-lower {
-    height: 320px;
+    max-height: 320px;
     overflow-y: auto;
     background-color: unset;
     display: flex;
