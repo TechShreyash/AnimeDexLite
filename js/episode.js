@@ -207,7 +207,6 @@ async function getEpSlider(total, current) {
 
 // Retry image load
 function retryImageLoad(img) {
-    return
     const ImageUrl = img.src
     img.src = "./static/loading1.gif";
 
@@ -312,6 +311,7 @@ async function loadData() {
         document.getElementById("error-desc").innerHTML = err;
         console.error(err);
     }
+    document.getElementById('AnimeDexFrame').focus()
 }
 
 loadData();
