@@ -37,6 +37,44 @@
             height: 100%;
             object-fit: contain;
         }
+
+        @keyframes plyr__time-skip {
+            40% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+        .plyr__time-skip {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            width: 40%;
+            opacity: 0;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .plyr__time-skip.is-left {
+            left: 0;
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, transparent 100%);
+        }
+
+        .plyr__time-skip.is-right {
+            right: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+        }
+
+        .plyr__time-skip.is-animated {
+            animation: plyr__time-skip ease 1s forwards;
+        }
     </style>
 
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
@@ -81,11 +119,13 @@
                         onChange: (e) => updateQuality(e),
                     };
                     const player = new Plyr(video, defaultOptions);
+                    configPlayer(player);
                 });
                 hls.attachMedia(video);
                 window.hls = hls;
             } else {
                 const player = new Plyr(video, defaultOptions);
+                configPlayer(player);
             }
 
             function updateQuality(newQuality) {
@@ -95,9 +135,87 @@
                     }
                 });
             }
+            function configPlayer(player) {
+                player.on('ready', () => {
+                    const root = video.closest('.plyr--video');
 
+                    player.eventListeners.forEach(function(eventListener) {
+                        if(eventListener.type === 'dblclick') {
+                            eventListener.element.removeEventListener(eventListener.type, eventListener.callback, eventListener.options);
+                        }
+                    });
+                    root.addEventListener('dblclick', function(event) {
+                        event.preventDefault();
+                    });
+                    const poster = root.querySelector('.plyr__poster');
+                    const timeSkip = document.createElement('div');
+                    const resetState = () => {
+                        poster.clickedTimes = 0;
+                        poster.lastSideClicked = undefined;
+                    };
+
+                    timeSkip.className = 'plyr__time-skip';
+                    poster.parentNode.insertBefore(timeSkip, poster);
+                    poster.clickedTimes = 0;
+                    poster.addEventListener('click', function (event) {
+                        poster.clickedTimes++;
+
+                        if (poster.resetTimeout) {
+                            clearTimeout(poster.resetTimeout);
+                        }
+
+                        poster.resetTimeout = setTimeout(resetState, 1000);
+
+                        // handle only double click
+                        if (poster.clickedTimes < 2) {
+                            return;
+                        }
+
+                        // find click position
+                        const percentage = (event.clientX - event.target.getBoundingClientRect().left) * 100 / event.target.offsetWidth;
+
+                        if (percentage < 40) {
+                            if (player.currentTime === 0
+                                || (typeof poster.lastSideClicked !== 'undefined' && poster.lastSideClicked !== 'L')
+                            ) {
+                                clearTimeout(poster.resetTimeout);
+                                resetState();
+
+                                return;
+                            }
+
+                            timeSkip.innerText = '❮❮\n' + ((poster.clickedTimes - 1) * 10) + 's';
+                            timeSkip.classList.add('is-left');
+                            timeSkip.classList.remove('is-right');
+                            timeSkip.classList.remove('is-animated');
+                            setTimeout(() => timeSkip.classList.add('is-animated'), 1);
+                            poster.lastSideClicked = 'L';
+                            player.rewind();
+                        } else if (percentage > 60) {
+                            if (player.currentTime === player.duration
+                                || (typeof poster.lastSideClicked !== 'undefined' && poster.lastSideClicked !== 'R')
+                            ) {
+                                clearTimeout(poster.resetTimeout);
+                                resetState();
+
+                                return;
+                            }
+
+                            timeSkip.innerText = '❯❯\n' + ((poster.clickedTimes - 1) * 10) + 's';
+                            timeSkip.classList.add('is-right');
+                            timeSkip.classList.remove('is-left');
+                            timeSkip.classList.remove('is-animated');
+                            setTimeout(() => timeSkip.classList.add('is-animated'), 1);
+                            poster.lastSideClicked = 'R';
+                            player.forward();
+                        } else {
+                            poster.lastSideClicked = 'C';
+                            poster.clickedTimes = 0;
+                        }
+                    });
+                });
+            }
         });
     </script>
 </body>
-
 </html>
