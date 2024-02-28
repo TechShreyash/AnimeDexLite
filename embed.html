@@ -47,6 +47,7 @@
                 opacity: 0;
             }
         }
+
         .plyr__time-skip {
             position: absolute;
             top: 0;
@@ -101,6 +102,10 @@
             video.setAttribute("data-poster", `https://thumb.anime-dex.workers.dev/get/${id}`);
 
             const defaultOptions = {
+                keyboard: {
+                    focused: true,
+                    global: true
+                },
 
             };
 
@@ -139,12 +144,12 @@
                 player.on('ready', () => {
                     const root = video.closest('.plyr--video');
 
-                    player.eventListeners.forEach(function(eventListener) {
-                        if(eventListener.type === 'dblclick') {
+                    player.eventListeners.forEach(function (eventListener) {
+                        if (eventListener.type === 'dblclick') {
                             eventListener.element.removeEventListener(eventListener.type, eventListener.callback, eventListener.options);
                         }
                     });
-                    root.addEventListener('dblclick', function(event) {
+                    root.addEventListener('dblclick', function (event) {
                         event.preventDefault();
                     });
                     const poster = root.querySelector('.plyr__poster');
@@ -218,4 +223,5 @@
         });
     </script>
 </body>
+
 </html>
