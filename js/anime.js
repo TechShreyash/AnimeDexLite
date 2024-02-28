@@ -203,15 +203,55 @@ function retryImageLoad(img) {
 
 // Function to get episode list
 async function getEpList(total) {
-    let ephtml = "";
+    const TotalEp = total.length;
+    let html = "";
+    let loadedFirst = false;
 
     for (let i = 0; i < total.length; i++) {
-        x = total[i][1].split("-episode-");
-        ephtml += `<a class="ep-btn" href="./episode.html?anime=${x[0]}&episode=${x[1]}">${x[1].replaceAll('-','.')}</a>`;
+        const x = total[i][1].split("-episode-");
+        const animeid = x[0];
+        const epnum = Number(x[1].replaceAll('-', '.'));
+
+        if (((epnum - 1) % 100) === 0) {
+            let epUpperBtnText;
+            if ((TotalEp - epnum) < 100) {
+                epUpperBtnText = `${epnum} - ${TotalEp}`;
+                html += `<a class="ep-btn" onclick="getEpLowerList(${epnum},${TotalEp},'${animeid}')">${epUpperBtnText}</a>`;
+
+                if (!loadedFirst) {
+                    getEpLowerList(epnum, TotalEp, animeid);
+                    loadedFirst = true;
+                }
+            } else {
+                epUpperBtnText = `${epnum} - ${epnum + 99}`;
+                html += `<a class="ep-btn" onclick="getEpLowerList(${epnum},${epnum + 99},'${animeid}')">${epUpperBtnText}</a>`;
+
+                if (!loadedFirst) {
+                    getEpLowerList(epnum, epnum + 99, animeid);
+                    loadedFirst = true;
+                }
+            }
+        }
     }
-    document.getElementById("ephtmldiv").innerHTML = ephtml;
+    document.getElementById('ep-upper-div').innerHTML = html;
     console.log("Episode list loaded");
 }
+
+async function getEpLowerList(start, end, animeid) {
+    let html = "";
+    for (let i = start; i <= end; i++) {
+        let epLowerBtnText;
+        if (i === end) {
+            epLowerBtnText = `${i}`;
+            html += `<a class="ep-btn" href="./episode.html?anime=${animeid}&episode=${i}">${epLowerBtnText}</a>`;
+        } else {
+            epLowerBtnText = `${i}`;
+            html += `<a class="ep-btn" href="./episode.html?anime=${animeid}&episode=${i}">${epLowerBtnText}</a>`;
+        }
+    }
+    document.getElementById('ep-lower-div').innerHTML = html;
+}
+
 
 // Function to get anime recommendations
 async function getRecommendations(anime_title) {

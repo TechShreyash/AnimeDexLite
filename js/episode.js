@@ -120,16 +120,56 @@ function showDownload() {
 // Function to get episode list
 async function getEpList(anime_id) {
     const data = (await getJson(animeapi + anime_id))["results"];
-    const eplist = data["episodes"];
-    let ephtml = "";
 
-    for (let i = 0; i < eplist.length; i++) {
-        anime_id = eplist[i][1].split("-episode-")[0];
-        ep_num = eplist[i][0];
-        ephtml += `<a class="ep-btn" href="./episode.html?anime=${anime_id}&episode=${ep_num}">${ep_num}</a>`;
+    const total = data["episodes"];
+    const TotalEp = total.length;
+    let html = "";
+    let loadedFirst = false;
+
+    for (let i = 0; i < total.length; i++) {
+        const x = total[i][1].split("-episode-");
+        const animeid = x[0];
+        const epnum = Number(x[1].replaceAll('-', '.'));
+
+        if (((epnum - 1) % 100) === 0) {
+            let epUpperBtnText;
+            if ((TotalEp - epnum) < 100) {
+                epUpperBtnText = `${epnum} - ${TotalEp}`;
+                html += `<a class="ep-btn" onclick="getEpLowerList(${epnum},${TotalEp},'${animeid}')">${epUpperBtnText}</a>`;
+
+                if (!loadedFirst) {
+                    getEpLowerList(epnum, TotalEp, animeid);
+                    loadedFirst = true;
+                }
+            } else {
+                epUpperBtnText = `${epnum} - ${epnum + 99}`;
+                html += `<a class="ep-btn" onclick="getEpLowerList(${epnum},${epnum + 99},'${animeid}')">${epUpperBtnText}</a>`;
+
+                if (!loadedFirst) {
+                    getEpLowerList(epnum, epnum + 99, animeid);
+                    loadedFirst = true;
+                }
+            }
+        }
     }
-    document.getElementById("ephtmldiv").innerHTML = ephtml;
-    return eplist;
+    document.getElementById('ep-upper-div').innerHTML = html;
+    console.log("Episode list loaded");
+    return total;
+}
+
+async function getEpLowerList(start, end, animeid) {
+    let html = "";
+    for (let i = start; i <= end; i++) {
+        let epLowerBtnText;
+        if (i === end) {
+            epLowerBtnText = `${i}`;
+            html += `<a class="ep-btn" href="./episode.html?anime=${animeid}&episode=${i}">${epLowerBtnText}</a>`;
+        } else {
+            epLowerBtnText = `${i}`;
+            html += `<a class="ep-btn" href="./episode.html?anime=${animeid}&episode=${i}">${epLowerBtnText}</a>`;
+        }
+    }
+    document.getElementById('ep-lower-div').innerHTML = html;
 }
 
 // Function to get download links

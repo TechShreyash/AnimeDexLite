@@ -1,6 +1,6 @@
 html,
 body {
-    background-color: #282828;
+    background-color: #131314;
     scroll-behavior: smooth;
     user-select: none;
 }
@@ -1331,6 +1331,8 @@ h2 {
     margin: 0px 2px;
     margin-bottom: 10px;
     display: inline-block;
+    width: 70px;
+    text-align: center;
 }
 
 @font-face {
@@ -1910,4 +1912,60 @@ h2 {
 
 #main-section {
     transition: all 0.5s ease;
+}
+.ep-divo-upper {
+    background-color: unset;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding-top: 5px;
+}
+
+.ep-divo-upper a {
+    width: 120px;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.ep-divo-lower {
+    height: 320px;
+    overflow-y: auto;
+    background-color: unset;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    transition: all 0.5s linear;
+}
+
+.ep-divo-outer {
+    background-color: #27272c;
+    width: 90%;
+    max-width: 770px;
+    margin: 20px auto;
+    border-radius: 5px;
+    padding-top: 5px;
+}
+
+.ep-btn {
+    background-color: #454444;
+    color: white;
+    display: block;
+
+}
+
+.ep-divo-outer h2 {
+    color: white;
+    margin-left: 15px;
+}
+
+.ep-btn:hover {
+    background-color: #eb001f;
 }
