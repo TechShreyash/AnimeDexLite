@@ -137,29 +137,32 @@ async function getEpList(anime_id, current_ep) {
                 epUpperBtnText = `${epnum} - ${TotalEp}`;
 
                 if ((epnum <= current_ep) && (current_ep <= TotalEp)) {
-                    html += `<option class="ep-btn" data-from=${epnum} data-to=${TotalEp} data-id=${animeid}>${epUpperBtnText}</option>`;
-                    getEpLowerList(epnum, TotalEp, animeid, current_ep);
+                    html += `<option id="default-ep-option" class="ep-btn" data-from=${epnum} data-to=${TotalEp}>${epUpperBtnText}</option>`;
+                    getEpLowerList(epnum, TotalEp);
                 } else {
-                    html += `<option class="ep-btn" data-from=${epnum} data-to=${TotalEp} data-id=${animeid}>${epUpperBtnText}</option>`;
+                    html += `<option class="ep-btn" data-from=${epnum} data-to=${TotalEp}>${epUpperBtnText}</option>`;
                 }
             } else {
                 epUpperBtnText = `${epnum} - ${epnum + 99}`;
 
                 if ((epnum <= current_ep) && (current_ep <= (epnum + 99))) {
-                    html += `<option class="ep-btn" data-from=${epnum} data-to=${(epnum + 99)} data-id=${animeid}>${epUpperBtnText}</option>`;
-                    getEpLowerList(epnum, (epnum + 99), animeid, current_ep);
+                    html += `<option id="default-ep-option" class="ep-btn" data-from=${epnum} data-to=${(epnum + 99)}>${epUpperBtnText}</option>`;
+                    getEpLowerList(epnum, (epnum + 99));
                 } else {
-                    html += `<option class="ep-btn" data-from=${epnum} data-to=${(epnum + 99)} data-id=${animeid}>${epUpperBtnText}</option>`;
+                    html += `<option class="ep-btn" data-from=${epnum} data-to=${(epnum + 99)}>${epUpperBtnText}</option>`;
                 }
             }
         }
     }
     document.getElementById('ep-upper-div').innerHTML = html;
+    document.getElementById('default-ep-option').selected = true;
     console.log("Episode list loaded");
     return total;
 }
 
-async function getEpLowerList(start, end, animeid, current_ep = 0) {
+async function getEpLowerList(start, end) {
+    const animeid = urlParams.get("anime")
+    const current_ep = Number(urlParams.get("episode").replace('-', '.'));
 
     let html = "";
     for (let i = start; i <= end; i++) {
@@ -176,8 +179,8 @@ async function getEpLowerList(start, end, animeid, current_ep = 0) {
 }
 
 async function episodeSelectChange(elem) {
-    var option = elem.options[elem.selectedIndex];
-    getEpLowerList(parseInt(option.getAttribute('data-from')), parseInt(option.getAttribute('data-to')), option.getAttribute('data-id'))
+    const option = elem.options[elem.selectedIndex];
+    getEpLowerList(parseInt(option.getAttribute('data-from')), parseInt(option.getAttribute('data-to')))
 }
 
 // Function to get download links
