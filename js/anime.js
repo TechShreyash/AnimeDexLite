@@ -216,7 +216,7 @@ async function getEpList(total) {
             let epUpperBtnText;
             if ((TotalEp - epnum) < 100) {
                 epUpperBtnText = `${epnum} - ${TotalEp}`;
-                html += `<a class="ep-btn" onclick="getEpLowerList(${epnum},${TotalEp},'${animeid}')">${epUpperBtnText}</a>`;
+                html += `<option class="ep-btn" data-from=${epnum} data-to=${TotalEp} data-id=${animeid}>${epUpperBtnText}</option>`;
 
                 if (!loadedFirst) {
                     getEpLowerList(epnum, TotalEp, animeid);
@@ -224,7 +224,7 @@ async function getEpList(total) {
                 }
             } else {
                 epUpperBtnText = `${epnum} - ${epnum + 99}`;
-                html += `<a class="ep-btn" onclick="getEpLowerList(${epnum},${epnum + 99},'${animeid}')">${epUpperBtnText}</a>`;
+                html += `<option class="ep-btn" data-from=${epnum} data-to=${epnum + 99} data-id=${animeid}>${epUpperBtnText}</option>`;
 
                 if (!loadedFirst) {
                     getEpLowerList(epnum, epnum + 99, animeid);
@@ -252,6 +252,10 @@ async function getEpLowerList(start, end, animeid) {
     document.getElementById('ep-lower-div').innerHTML = html;
 }
 
+async function episodeSelectChange(elem){
+    var option = elem.options[elem.selectedIndex];
+    getEpLowerList(parseInt(option.getAttribute('data-from')),parseInt(option.getAttribute('data-to')),option.getAttribute('data-id'))
+}
 
 // Function to get anime recommendations
 async function getRecommendations(anime_title) {
