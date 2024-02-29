@@ -1119,14 +1119,17 @@ h2 {
 
 
 .ep-divo-upper {
-    background-color: unset;
+	border:none;
+    background-color: orange;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    padding-top: 5px;
+    margin: 5px;
+    padding: 5px 15px;
+    text-align: left;
 }
 
-.ep-divo-upper a {
+.ep-divo-upper option {
     width: 120px;
 }
 
@@ -1157,6 +1160,11 @@ h2 {
     margin: 20px auto;
     border-radius: 5px;
     padding-top: 5px;
+}
+
+.ep-divo-outer section{
+	display:flex;
+	flex-direction:row;
 }
 
 .ep-btn {
