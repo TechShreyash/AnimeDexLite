@@ -118,13 +118,13 @@ function showDownload() {
 }
 
 // Function to get episode list
-async function getEpList(anime_id) {
+async function getEpList(anime_id, current_ep) {
+    current_ep = Number(current_ep.replace('-', '.'));
     const data = (await getJson(animeapi + anime_id))["results"];
 
     const total = data["episodes"];
     const TotalEp = total.length;
     let html = "";
-    let loadedFirst = false;
 
     for (let i = 0; i < total.length; i++) {
         const x = total[i][1].split("-episode-");
@@ -135,19 +135,21 @@ async function getEpList(anime_id) {
             let epUpperBtnText;
             if ((TotalEp - epnum) < 100) {
                 epUpperBtnText = `${epnum} - ${TotalEp}`;
-                html += `<option class="ep-btn" data-from=${epnum} data-to=${TotalEp} data-id=${animeid}>${epUpperBtnText}</option>`;
 
-                if (!loadedFirst) {
-                    getEpLowerList(epnum, TotalEp, animeid);
-                    loadedFirst = true;
+                if ((epnum <= current_ep) && (current_ep <= TotalEp)) {
+                    html += `<option class="ep-btn" data-from=${epnum} data-to=${TotalEp} data-id=${animeid}>${epUpperBtnText}</option>`;
+                    getEpLowerList(epnum, TotalEp, animeid, current_ep);
+                } else {
+                    html += `<option class="ep-btn" data-from=${epnum} data-to=${TotalEp} data-id=${animeid}>${epUpperBtnText}</option>`;
                 }
             } else {
                 epUpperBtnText = `${epnum} - ${epnum + 99}`;
-                html += `<option class="ep-btn" data-from=${epnum} data-to=${epnum + 99} data-id=${animeid}>${epUpperBtnText}</option>`;
 
-                if (!loadedFirst) {
-                    getEpLowerList(epnum, epnum + 99, animeid);
-                    loadedFirst = true;
+                if ((epnum <= current_ep) && (current_ep <= (epnum + 99))) {
+                    html += `<option class="ep-btn" data-from=${epnum} data-to=${(epnum + 99)} data-id=${animeid}>${epUpperBtnText}</option>`;
+                    getEpLowerList(epnum, (epnum + 99), animeid, current_ep);
+                } else {
+                    html += `<option class="ep-btn" data-from=${epnum} data-to=${(epnum + 99)} data-id=${animeid}>${epUpperBtnText}</option>`;
                 }
             }
         }
@@ -157,24 +159,25 @@ async function getEpList(anime_id) {
     return total;
 }
 
-async function getEpLowerList(start, end, animeid) {
+async function getEpLowerList(start, end, animeid, current_ep = 0) {
+
     let html = "";
     for (let i = start; i <= end; i++) {
         let epLowerBtnText;
-        if (i === end) {
-            epLowerBtnText = `${i}`;
-            html += `<a class="ep-btn" href="./episode.html?anime=${animeid}&episode=${i}">${epLowerBtnText}</a>`;
+        epLowerBtnText = `${i}`;
+
+        if (i === current_ep) {
+            html += `<a class="ep-btn-playing ep-btn" href="./episode.html?anime=${animeid}&episode=${i}">${epLowerBtnText}</a>`;
         } else {
-            epLowerBtnText = `${i}`;
             html += `<a class="ep-btn" href="./episode.html?anime=${animeid}&episode=${i}">${epLowerBtnText}</a>`;
         }
     }
     document.getElementById('ep-lower-div').innerHTML = html;
 }
 
-async function episodeSelectChange(elem){
+async function episodeSelectChange(elem) {
     var option = elem.options[elem.selectedIndex];
-    getEpLowerList(parseInt(option.getAttribute('data-from')),parseInt(option.getAttribute('data-to')),option.getAttribute('data-id'))
+    getEpLowerList(parseInt(option.getAttribute('data-from')), parseInt(option.getAttribute('data-to')), option.getAttribute('data-id'))
 }
 
 // Function to get download links
@@ -237,6 +240,7 @@ async function getEpSlider(total, current) {
     // Scroll to playing episode
     document.getElementById('main-section').style.display = "block";
     document.getElementsByClassName("ep-slider-playing")[0].scrollIntoView({ behavior: "instant", inline: "start", block: 'end' });
+    document.getElementsByClassName("ep-btn-playing")[0].scrollIntoView({ behavior: "instant", inline: "start", block: 'end' });
     window.scrollTo({
         top: 0,
         left: 0,
@@ -346,7 +350,7 @@ async function loadData() {
         );
 
         await loadEpisodeData(data)
-        const eplist = await getEpList(urlParams.get("anime"))
+        const eplist = await getEpList(urlParams.get("anime"), urlParams.get("episode"))
         console.log("Episode list loaded");
         await getEpSlider(eplist, urlParams.get("episode"))
         console.log("Episode Slider loaded");

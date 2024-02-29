@@ -1913,15 +1913,12 @@ h2 {
 #main-section {
     transition: all 0.5s ease;
 }
+
 .ep-divo-upper {
-    border:none;
+    border: none;
     background-color: orange;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    margin: 5px;
-    padding: 5px 15px;
-    text-align: left;
+    margin: 5px 10px 10px 10px;
+    padding: 10px 15px;
 }
 
 .ep-divo-upper option {
@@ -1957,9 +1954,10 @@ h2 {
     border-radius: 5px;
     padding-top: 5px;
 }
-.ep-divo-outer section{
-    display:flex;
-    flex-direction:row;
+
+.ep-divo-outer section {
+    display: flex;
+    flex-direction: row;
 }
 
 .ep-btn {
@@ -1974,5 +1972,9 @@ h2 {
 }
 
 .ep-btn:hover {
+    background-color: #eb001f;
+}
+
+.ep-btn-playing {
     background-color: #eb001f;
 }
