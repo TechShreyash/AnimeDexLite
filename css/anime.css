@@ -1119,7 +1119,7 @@ h2 {
 
 
 .ep-divo-upper {
-	border:none;
+    border:none;
     background-color: orange;
     display: flex;
     flex-wrap: wrap;
@@ -1147,9 +1147,10 @@ h2 {
     max-height: 320px;
     overflow-y: auto;
     background-color: unset;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    place-items: center;
+    grid-gap: 10px;
     transition: all 0.5s linear;
 }
 
@@ -1163,15 +1164,14 @@ h2 {
 }
 
 .ep-divo-outer section{
-	display:flex;
-	flex-direction:row;
+    display:flex;
+    flex-direction:row;
 }
 
 .ep-btn {
     background-color: #454444;
     color: white;
     display: block;
-
 }
 
 .ep-divo-outer h2 {
