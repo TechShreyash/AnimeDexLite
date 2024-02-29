@@ -1914,14 +1914,17 @@ h2 {
     transition: all 0.5s ease;
 }
 .ep-divo-upper {
-    background-color: unset;
+    border:none;
+    background-color: orange;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    padding-top: 5px;
+    margin: 5px;
+    padding: 5px 15px;
+    text-align: left;
 }
 
-.ep-divo-upper a {
+.ep-divo-upper option {
     width: 120px;
 }
 
@@ -1939,9 +1942,10 @@ h2 {
     max-height: 320px;
     overflow-y: auto;
     background-color: unset;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    place-items: center;
+    grid-gap: 10px;
     transition: all 0.5s linear;
 }
 
@@ -1953,12 +1957,15 @@ h2 {
     border-radius: 5px;
     padding-top: 5px;
 }
+.ep-divo-outer section{
+    display:flex;
+    flex-direction:row;
+}
 
 .ep-btn {
     background-color: #454444;
     color: white;
     display: block;
-
 }
 
 .ep-divo-outer h2 {
