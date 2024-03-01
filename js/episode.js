@@ -87,7 +87,7 @@ async function loadServers(servers, success = true) {
         if (key != 'vidcdn') {
             key = capitalizeFirstLetter(key);
             if (key == 'Streamwish') {
-                html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this,true)" data-value="${value}">${key} - AD Free</a> </div>`;
+                html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this,true)" data-value="${value}">AD Free 3</a> </div>`;
             } else {
                 html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="${value}">${key}</a> </div>`;
             }
@@ -131,11 +131,14 @@ function showDownload() {
 }
 
 // Function to get episode list
+let Episode_List = [];
+
 async function getEpList(anime_id, current_ep) {
     current_ep = Number(current_ep.replace('-', '.'));
     const data = (await getJson(animeapi + anime_id))["results"];
 
     const total = data["episodes"];
+    Episode_List = total;
     const TotalEp = total.length;
     let html = "";
 
@@ -178,14 +181,21 @@ async function getEpLowerList(start, end) {
     const current_ep = Number(urlParams.get("episode").replace('-', '.'));
 
     let html = "";
-    for (let i = start; i <= end; i++) {
-        let epLowerBtnText;
-        epLowerBtnText = `${i}`;
+    const eplist = Episode_List.slice(start - 1, end);
 
-        if (i === current_ep) {
-            html += `<a class="ep-btn-playing ep-btn" href="./episode.html?anime=${animeid}&episode=${i}">${epLowerBtnText}</a>`;
+    for (let i = 0; i < eplist.length; i++) {
+        const x = eplist[i][1].split("-episode-");
+        const animeid = x[0];
+        let epnum = Number(x[1].replaceAll('-', '.'));
+
+        let epLowerBtnText;
+        epLowerBtnText = `${epnum}`;
+
+        if (epnum === current_ep) {
+            epnum = String(epnum).replaceAll('.', '-');
+            html += `<a class="ep-btn-playing ep-btn" href="./episode.html?anime=${animeid}&episode=${epnum}">${epLowerBtnText}</a>`;
         } else {
-            html += `<a class="ep-btn" href="./episode.html?anime=${animeid}&episode=${i}">${epLowerBtnText}</a>`;
+            html += `<a class="ep-btn" href="./episode.html?anime=${animeid}&episode=${epnum}">${epLowerBtnText}</a>`;
         }
     }
     document.getElementById('ep-lower-div').innerHTML = html;

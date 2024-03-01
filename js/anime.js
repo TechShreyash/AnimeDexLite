@@ -204,7 +204,10 @@ function retryImageLoad(img) {
 }
 
 // Function to get episode list
+let Episode_List = [];
+
 async function getEpList(total) {
+    Episode_List = total;
     const TotalEp = total.length;
     let html = "";
     let loadedFirst = false;
@@ -218,18 +221,18 @@ async function getEpList(total) {
             let epUpperBtnText;
             if ((TotalEp - epnum) < 100) {
                 epUpperBtnText = `${epnum} - ${TotalEp}`;
-                html += `<option class="ep-btn" data-from=${epnum} data-to=${TotalEp} data-id=${animeid}>${epUpperBtnText}</option>`;
+                html += `<option class="ep-btn" data-from=${epnum} data-to=${TotalEp}>${epUpperBtnText}</option>`;
 
                 if (!loadedFirst) {
-                    getEpLowerList(epnum, TotalEp, animeid);
+                    getEpLowerList(epnum, TotalEp);
                     loadedFirst = true;
                 }
             } else {
                 epUpperBtnText = `${epnum} - ${epnum + 99}`;
-                html += `<option class="ep-btn" data-from=${epnum} data-to=${epnum + 99} data-id=${animeid}>${epUpperBtnText}</option>`;
+                html += `<option class="ep-btn" data-from=${epnum} data-to=${epnum + 99}>${epUpperBtnText}</option>`;
 
                 if (!loadedFirst) {
-                    getEpLowerList(epnum, epnum + 99, animeid);
+                    getEpLowerList(epnum, epnum + 99);
                     loadedFirst = true;
                 }
             }
@@ -239,24 +242,27 @@ async function getEpList(total) {
     console.log("Episode list loaded");
 }
 
-async function getEpLowerList(start, end, animeid) {
+async function getEpLowerList(start, end) {
     let html = "";
-    for (let i = start; i <= end; i++) {
+    const eplist = Episode_List.slice(start - 1, end);
+
+    for (let i = 0; i < eplist.length; i++) {
+        const x = eplist[i][1].split("-episode-");
+        const animeid = x[0];
+        let epnum = Number(x[1].replaceAll('-', '.'));
+
         let epLowerBtnText;
-        if (i === end) {
-            epLowerBtnText = `${i}`;
-            html += `<a class="ep-btn" href="./episode.html?anime=${animeid}&episode=${i}">${epLowerBtnText}</a>`;
-        } else {
-            epLowerBtnText = `${i}`;
-            html += `<a class="ep-btn" href="./episode.html?anime=${animeid}&episode=${i}">${epLowerBtnText}</a>`;
-        }
+        epLowerBtnText = `${epnum}`;
+
+        epnum = String(epnum).replaceAll('.', '-');
+        html += `<a class="ep-btn" href="./episode.html?anime=${animeid}&episode=${epnum}">${epLowerBtnText}</a>`;
     }
     document.getElementById('ep-lower-div').innerHTML = html;
 }
 
 async function episodeSelectChange(elem) {
     var option = elem.options[elem.selectedIndex];
-    getEpLowerList(parseInt(option.getAttribute('data-from')), parseInt(option.getAttribute('data-to')), option.getAttribute('data-id'))
+    getEpLowerList(parseInt(option.getAttribute('data-from')), parseInt(option.getAttribute('data-to')))
 }
 
 // Function to get anime recommendations
