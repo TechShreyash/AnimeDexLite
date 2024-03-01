@@ -84,8 +84,14 @@ async function loadServers(servers, success = true) {
     html = "";
 
     for (let [key, value] of Object.entries(servers)) {
-        key = capitalizeFirstLetter(key);
-        html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="${value}">${key}</a> </div>`;
+        if (key != 'vidcdn') {
+            key = capitalizeFirstLetter(key);
+            if (key == 'Streamwish') {
+                html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this,true)" data-value="${value}">${key} - AD Free</a> </div>`;
+            } else {
+                html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="${value}">${key}</a> </div>`;
+            }
+        }
     }
     serversbtn.innerHTML += html;
 
@@ -95,9 +101,16 @@ async function loadServers(servers, success = true) {
 }
 
 // Function to select server
-function selectServer(btn) {
+function selectServer(btn, sandbox = false) {
     const buttons = document.getElementsByClassName("sobtn");
     const iframe = document.getElementById("AnimeDexFrame");
+
+    if (sandbox == true) {
+        iframe.sandbox = "allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation";
+    } else {
+        iframe.removeAttribute("sandbox");
+    }
+
     iframe.src = btn.getAttribute("data-value");
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].className = "sobtn";
@@ -330,6 +343,9 @@ async function loadEpisodeData(data) {
         document.documentElement.innerHTML.replaceAll("{{ title }}", name);
 
     try {
+        if (stream == null) {
+            throw "Failed To Load Ad Free Servers";
+        }
         loadVideo(name, stream).then(() => {
             console.log("Video loaded");
             loadServers(servers, true).then(() => {
