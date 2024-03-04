@@ -45,7 +45,7 @@
     </style>
 </head>
 
-<body>
+<body id="body">
     <header id="head-div">
         <div id="title1">
             <a href="./index.html"><img width="150" height="40" src="./static/header.png" alt="AnimeDex"></a>
@@ -57,6 +57,7 @@
             </form>
         </div>
     </header>
+
     <div id="load">
         <img src="./static/loading2.gif" alt="Loading..." />
     </div>
@@ -71,7 +72,7 @@
     </div>
     <!-- Error Page -->
 
-    <div id="main-content" style="display: none">
+    <div id="main-content" style="display: none;">
         <section>
             <div id="background">
                 <div id="cover"></div>
@@ -79,7 +80,7 @@
 
             <div class="anime row">
                 <div class="poster col-3">
-                    <img src="IMG" />
+                    <img id="poster-img" class="lzy_img" src="./static/loading1.gif" data-src="IMG" style="display: none;" />
                 </div>
                 <div class="details col-6">
                     <h1 class="anime-title">TITLE</h1>
@@ -141,12 +142,13 @@
                     <a class="next" onclick="plusSlides(+1)">❯</a>
                 </div>
                 <!-- Episode Slider End -->
-                
+
                 <!-- Episode List Start -->
-                <div class="ep-divo-outer">
+                <div id="ep-divo-outer" class="ep-divo-outer" style="display: none;">
                     <section>
                         <h2>List Of Episodes:</h2>
-                        <select id="ep-upper-div" class="ep-divo-upper divo2" onchange="episodeSelectChange(this)"></select>
+                        <select id="ep-upper-div" class="ep-divo-upper divo2"
+                            onchange="episodeSelectChange(this)"></select>
                     </section>
                     <hr>
                     <div id="ep-lower-div" class="ep-divo-lower divo2"></div>

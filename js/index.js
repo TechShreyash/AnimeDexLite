@@ -73,7 +73,7 @@ async function getTrendingAnimes(data) {
         let status = anime["status"];
         let genres = genresToString(anime["genres"]);
         let description = anime["description"];
-        let url = "./anime.html?anime=" + encodeURIComponent(title);
+        let url = "./anime.html?anime_id=" + encodeURIComponent(title);
 
         let poster = anime["bannerImage"];
         if (poster == null) {
@@ -97,7 +97,7 @@ async function getPopularAnimes(data) {
         let anime = data[pos];
         let title = anime["title"];
         let id = anime["id"];
-        let url = "./anime.html?anime=" + id;
+        let url = "./anime.html?anime_id=" + id;
         let image = anime["image"];
         let subOrDub;
         if (title.toLowerCase().includes("dub")) {
@@ -121,7 +121,7 @@ async function getRecentAnimes(page = 1) {
         let anime = data[pos];
         let title = anime["title"];
         let id = anime["id"].split("-episode-")[0];
-        let url = "./anime.html?anime=" + id;
+        let url = "./anime.html?anime_id=" + id;
         let image = anime["image"];
         let ep = anime["episode"].split(" ")[1];
         let subOrDub;

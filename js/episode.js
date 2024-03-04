@@ -87,7 +87,7 @@ async function loadServers(servers, success = true) {
         if (key != 'vidcdn') {
             key = capitalizeFirstLetter(key);
             if (key == 'Streamwish') {
-                html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this,true)" data-value="${value}">AD Free 3</a> </div>`;
+                html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this,true)" data-value="${value}">${key}</a> </div>`;
             } else {
                 html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="${value}">${key}</a> </div>`;
             }
@@ -133,19 +133,14 @@ function showDownload() {
 // Function to get episode list
 let Episode_List = [];
 
-async function getEpList(anime_id, current_ep) {
-    current_ep = Number(current_ep.replace('-', '.'));
-    const data = (await getJson(animeapi + anime_id))["results"];
-
-    const total = data["episodes"];
-    Episode_List = total;
-    const TotalEp = total.length;
+async function getEpUpperList(eplist) {
+    const current_ep = Number(EpisodeID.split('-episode-')[1].replace('-', '.'));
+    Episode_List = eplist;
+    const TotalEp = eplist.length;
     let html = "";
 
-    for (let i = 0; i < total.length; i++) {
-        const x = total[i][1].split("-episode-");
-        const animeid = x[0];
-        const epnum = Number(x[1].replaceAll('-', '.'));
+    for (let i = 0; i < eplist.length; i++) {
+        const epnum = Number(eplist[i][0].replaceAll('-', '.'));
 
         if (((epnum - 1) % 100) === 0) {
             let epUpperBtnText;
@@ -173,29 +168,26 @@ async function getEpList(anime_id, current_ep) {
     document.getElementById('ep-upper-div').innerHTML = html;
     document.getElementById('default-ep-option').selected = true;
     console.log("Episode list loaded");
-    return total;
 }
 
 async function getEpLowerList(start, end) {
-    const animeid = urlParams.get("anime")
-    const current_ep = Number(urlParams.get("episode").replace('-', '.'));
+    const current_ep = Number(EpisodeID.split('-episode-')[1].replace('-', '.'));
 
     let html = "";
     const eplist = Episode_List.slice(start - 1, end);
 
     for (let i = 0; i < eplist.length; i++) {
-        const x = eplist[i][1].split("-episode-");
-        const animeid = x[0];
-        let epnum = Number(x[1].replaceAll('-', '.'));
+        const episode_id = eplist[i][1];
+        let epnum = Number(eplist[i][0].replaceAll('-', '.'));
 
         let epLowerBtnText;
         epLowerBtnText = `${epnum}`;
 
         if (epnum === current_ep) {
             epnum = String(epnum).replaceAll('.', '-');
-            html += `<a class="ep-btn-playing ep-btn" href="./episode.html?anime=${animeid}&episode=${epnum}">${epLowerBtnText}</a>`;
+            html += `<a class="ep-btn-playing ep-btn" href="./episode.html?anime_id=${AnimeID}&episode_id=${episode_id}">${epLowerBtnText}</a>`;
         } else {
-            html += `<a class="ep-btn" href="./episode.html?anime=${animeid}&episode=${epnum}">${epLowerBtnText}</a>`;
+            html += `<a class="ep-btn" href="./episode.html?anime_id=${AnimeID}&episode_id=${episode_id}">${epLowerBtnText}</a>`;
         }
     }
     document.getElementById('ep-lower-div').innerHTML = html;
@@ -234,28 +226,26 @@ function isShortNumber(n) {
 }
 
 // Function to get episode Slider
-async function getEpSlider(total, current) {
-    current = Number(current.replace('-', '.'));
+async function getEpSlider(total) {
     let ephtml = "";
 
     for (let i = 0; i < total.length; i++) {
-        let episodeId = total[i][1]
-        let epNum = total[i][0]
-        let x = episodeId.split("-episode-");
-        if (epNum == current) {
+        const episodeId = total[i][1]
+        const epNum = total[i][0]
+        if (episodeId == EpisodeID) {
             if (isShortNumber(epNum)) {
-                ephtml += `<div class="ep-slide ep-slider-playing"><a href="./episode.html?anime=${x[0]}&episode=${x[1]}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum} - Playing</span></div></a></div>`;
+                ephtml += `<div class="ep-slide ep-slider-playing"><a href="./episode.html?anime_id=${AnimeID}&episode_id=${episodeId}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum} - Playing</span></div></a></div>`;
             }
             else {
-                ephtml += `<div class="ep-slide ep-slider-playing"><a href="./episode.html?anime=${x[0]}&episode=${x[1]}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Ep ${epNum} - Playing</span></div></a></div>`;
+                ephtml += `<div class="ep-slide ep-slider-playing"><a href="./episode.html?anime_id=${AnimeID}&episode_id=${episodeId}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Ep ${epNum} - Playing</span></div></a></div>`;
             }
         }
         else {
             if (isShortNumber(epNum)) {
-                ephtml += `<div class=ep-slide><a href="./episode.html?anime=${x[0]}&episode=${x[1]}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></a></div>`;
+                ephtml += `<div class=ep-slide><a href="./episode.html?anime_id=${AnimeID}&episode_id=${episodeId}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></a></div>`;
             }
             else {
-                ephtml += `<div class=ep-slide><a href="./episode.html?anime=${x[0]}&episode=${x[1]}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Ep ${epNum}</span></div></a></div>`;
+                ephtml += `<div class=ep-slide><a href="./episode.html?anime_id=${AnimeID}&episode_id=${episodeId}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Ep ${epNum}</span></div></a></div>`;
             }
         }
     }
@@ -307,12 +297,14 @@ function retryImageLoad(img) {
 
 
 // Function to scroll episode slider
+const windowWidth = window.innerWidth;
+
 function plusSlides(n) {
     if (n === 1) {
-        document.getElementById("slider-carousel").scrollLeft += 600;
+        document.getElementById("slider-carousel").scrollLeft += windowWidth / 2;
     }
     else if (n === -1) {
-        document.getElementById("slider-carousel").scrollLeft -= 600;
+        document.getElementById("slider-carousel").scrollLeft -= windowWidth / 2;
     }
 }
 
@@ -332,20 +324,21 @@ async function RefreshLazyLoader() {
 }
 
 
+// Running functions
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
+const AnimeID = urlParams.get("anime_id");
+const EpisodeID = urlParams.get("episode_id");
 
-if (urlParams.get("anime") == null || urlParams.get("episode") == null) {
+if (AnimeID == null || EpisodeID == null) {
     window.location = "./index.html";
 }
 
-// Running functions
 
 async function loadEpisodeData(data) {
     data = data["results"];
     const name = data["name"];
-    const episodes = data["episodes"];
     const stream = data["stream"];
     const servers = data["servers"];
 
@@ -373,15 +366,31 @@ async function loadData() {
     try {
         let data = await getJson(
             episodeapi +
-            urlParams.get("anime") +
-            "-episode-" +
-            urlParams.get("episode")
+            EpisodeID
         );
 
         await loadEpisodeData(data)
-        const eplist = await getEpList(urlParams.get("anime"), urlParams.get("episode"))
+
+        const eplist = (await getJson(animeapi + AnimeID))["results"]["episodes"];
+        getEpUpperList(eplist)
         console.log("Episode list loaded");
-        await getEpSlider(eplist, urlParams.get("episode"))
+
+        try {
+            await getEpSlider(eplist, urlParams.get("episode"))
+        }
+        catch {
+            document.getElementById('main-section').style.display = "block";
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "instant",
+            });
+
+            setTimeout(() => {
+                document.getElementById('main-section').style.opacity = 1;
+                document.getElementById('load').style.display = "none";
+            }, 100);
+        }
         console.log("Episode Slider loaded");
     } catch (err) {
         document.getElementById("main-section").style.display = "none";

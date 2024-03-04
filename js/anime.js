@@ -1,15 +1,19 @@
 // Api urls
 
-const ProxyApi = "https://proxy.techzbots1.workers.dev/?u="
+const ProxyApi = "https://proxy.techzbots1.workers.dev/?u=";
 const animeapi = "/anime/";
 const recommendationsapi = "/recommendations/";
 
 // Api Server Manager
 
-const AvailableServers = ['https://api1.anime-dex.workers.dev', 'https://api2.anime-dex.workers.dev', 'https://api3.anime-dex.workers.dev']
+const AvailableServers = [
+    "https://api1.anime-dex.workers.dev",
+    "https://api2.anime-dex.workers.dev",
+    "https://api3.anime-dex.workers.dev",
+];
 
 function getApiServer() {
-    return AvailableServers[Math.floor(Math.random() * AvailableServers.length)]
+    return AvailableServers[Math.floor(Math.random() * AvailableServers.length)];
 }
 
 // Usefull functions
@@ -17,7 +21,6 @@ function getApiServer() {
 async function getJson(path, errCount = 0) {
     const ApiServer = getApiServer();
     let url = ApiServer + path;
-
 
     if (errCount > 2) {
         throw `Too many errors while fetching ${url}`;
@@ -106,19 +109,22 @@ async function loadAnimeFromGogo(data) {
 
     document.getElementById("main-content").style.display = "block";
     document.getElementById("load").style.display = "none";
+    setTimeout(() => {
+        document.getElementById("poster-img").style.display = "block";
+    }, 100);
+
     document.getElementById("watch-btn").href =
-        "./episode.html?anime=" +
-        data["episodes"][0][1].split("-episode-")[0] +
-        "&episode=" +
-        data["episodes"][0][0];
-    const anime_title = data["name"];
+        "./episode.html?anime_id=" +
+        AnimeID +
+        "&episode_id=" +
+        data["episodes"][0][1];
 
     console.log("Anime Info loaded");
     RefreshLazyLoader();
 
-    await getEpSlider(data["episodes"])
-    await getEpList(data["episodes"])
-    await getRecommendations(anime_title)
+    getEpSlider(data["episodes"]);
+    getEpList(data["episodes"]);
+    getRecommendations(data["name"]);
 }
 
 // Function to get anime info from anilist search
@@ -149,7 +155,7 @@ async function loadAnimeFromAnilist(data) {
     for (i = 0; i < recommendations.length; i++) {
         let anime = recommendations[i];
         let title = anime["title"]["userPreferred"];
-        rechtml += `<a href="./anime.html?anime=${title}"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime["meanScore"]} / 100</div><div class="dubb dubb2">${anime["format"]}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="./static/loading1.gif" data-src="${anime["coverImage"]["large"]}"> </div><div class="la-details"> <h3>${title}</h3> <div id="extra"> <span>${anime["status"]}</span> <span class="dot"></span> <span>EP ${anime["episodes"]}</span> </div></div></div></a>`;
+        rechtml += `<a href="./anime.html?anime_id=${title}"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime["meanScore"]} / 100</div><div class="dubb dubb2">${anime["format"]}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="./static/loading1.gif" data-src="${anime["coverImage"]["large"]}"> </div><div class="la-details"> <h3>${title}</h3> <div id="extra"> <span>${anime["status"]}</span> <span class="dot"></span> <span>EP ${anime["episodes"]}</span> </div></div></div></a>`;
     }
     document.getElementById("latest2").innerHTML = rechtml;
 
@@ -164,29 +170,31 @@ async function loadAnimeFromAnilist(data) {
 async function getEpSlider(total) {
     let ephtml = "";
 
-    for (let i = 0; i < total.length; i++) {
-        let episodeId = total[i][1]
-        let epNum = total[i][0]
-        if (Number(epNum.replaceAll('-', '.')) > 0) {
-            let x = episodeId.split("-episode-");
-            ephtml += `<div class=ep-slide><a href="./episode.html?anime=${x[0]}&episode=${x[1]}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></a></div>`;
+    try {
+        for (let i = 0; i < total.length; i++) {
+            const episodeId = total[i][1];
+            const epNum = total[i][0].replaceAll("-", ".");
+            if (Number(epNum) > 0) {
+                ephtml += `<div class=ep-slide><a href="./episode.html?anime_id=${AnimeID}&episode_id=${episodeId}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></a></div>`;
+            }
         }
+        document.getElementById("ep-slider").innerHTML = ephtml;
+        document.getElementById("slider-main").style.display = "block";
+        RefreshLazyLoader();
+        console.log("Episode Slider loaded");
+    } catch (err) {
+        console.error(err);
     }
-    document.getElementById("ep-slider").innerHTML = ephtml;
-    document.getElementById("slider-main").style.display = "block";
-    RefreshLazyLoader();
-    console.log("Episode Slider loaded");
 }
 
 // Retry image load
 function retryImageLoad(img) {
-    const ImageUrl = img.src
+    const ImageUrl = img.src;
     img.src = "./static/loading1.gif";
 
-    // load after 3 second
+    // retry loading after 3 second
 
     setTimeout(() => {
-
         if (ImageUrl.includes("?t=")) {
             const t = Number(ImageUrl.split("?t=")[1]) + 1;
 
@@ -194,13 +202,10 @@ function retryImageLoad(img) {
             if (t < 5) {
                 img.src = ImageUrl.split("?t=")[0] + "?t=" + String(t);
             }
-        }
-        else {
+        } else {
             img.src = ImageUrl + "?t=1";
         }
-
     }, 3000);
-
 }
 
 // Function to get episode list
@@ -213,32 +218,35 @@ async function getEpList(total) {
     let loadedFirst = false;
 
     for (let i = 0; i < total.length; i++) {
-        const x = total[i][1].split("-episode-");
-        const animeid = x[0];
-        const epnum = Number(x[1].replaceAll('-', '.'));
+        const epnum = Number(total[i][0].replaceAll("-", "."));
 
-        if (((epnum - 1) % 100) === 0) {
+        if ((epnum - 1) % 100 === 0) {
             let epUpperBtnText;
-            if ((TotalEp - epnum) < 100) {
+
+            if (TotalEp - epnum < 100) {
                 epUpperBtnText = `${epnum} - ${TotalEp}`;
                 html += `<option class="ep-btn" data-from=${epnum} data-to=${TotalEp}>${epUpperBtnText}</option>`;
 
                 if (!loadedFirst) {
+                    // load first episode list
                     getEpLowerList(epnum, TotalEp);
                     loadedFirst = true;
                 }
             } else {
                 epUpperBtnText = `${epnum} - ${epnum + 99}`;
-                html += `<option class="ep-btn" data-from=${epnum} data-to=${epnum + 99}>${epUpperBtnText}</option>`;
+                html += `<option class="ep-btn" data-from=${epnum} data-to=${epnum + 99
+                    }>${epUpperBtnText}</option>`;
 
                 if (!loadedFirst) {
+                    // load first episode list
                     getEpLowerList(epnum, epnum + 99);
                     loadedFirst = true;
                 }
             }
         }
     }
-    document.getElementById('ep-upper-div').innerHTML = html;
+    document.getElementById("ep-upper-div").innerHTML = html;
+    document.getElementById("ep-divo-outer").style.display = "block";
     console.log("Episode list loaded");
 }
 
@@ -247,37 +255,37 @@ async function getEpLowerList(start, end) {
     const eplist = Episode_List.slice(start - 1, end);
 
     for (let i = 0; i < eplist.length; i++) {
+        const episode_id = eplist[i][1];
         const x = eplist[i][1].split("-episode-");
-        const animeid = x[0];
-        let epnum = Number(x[1].replaceAll('-', '.'));
+        let epnum = Number(x[1].replaceAll("-", "."));
 
-        let epLowerBtnText;
-        epLowerBtnText = `${epnum}`;
+        let epLowerBtnText = `${epnum}`;
 
-        epnum = String(epnum).replaceAll('.', '-');
-        html += `<a class="ep-btn" href="./episode.html?anime=${animeid}&episode=${epnum}">${epLowerBtnText}</a>`;
+        html += `<a class="ep-btn" href="./episode.html?anime_id=${AnimeID}&episode_id=${episode_id}">${epLowerBtnText}</a>`;
     }
-    document.getElementById('ep-lower-div').innerHTML = html;
+    document.getElementById("ep-lower-div").innerHTML = html;
 }
 
 async function episodeSelectChange(elem) {
     var option = elem.options[elem.selectedIndex];
-    getEpLowerList(parseInt(option.getAttribute('data-from')), parseInt(option.getAttribute('data-to')))
+    getEpLowerList(
+        parseInt(option.getAttribute("data-from")),
+        parseInt(option.getAttribute("data-to"))
+    );
 }
 
 // Function to get anime recommendations
 async function getRecommendations(anime_title) {
-    document.getElementsByClassName("sload")[0].style.display = 'block';
+    document.getElementsByClassName("sload")[0].style.display = "block";
 
     anime_title = anime_title.replaceAll(" ", "+");
 
     let data;
     try {
         data = await getJson(recommendationsapi + anime_title);
-    }
-    catch (err) {
-        document.getElementById('similar-div').style.display = 'none';
-        return
+    } catch (err) {
+        document.getElementById("similar-div").style.display = "none";
+        return;
     }
 
     const recommendations = data["results"];
@@ -286,47 +294,51 @@ async function getRecommendations(anime_title) {
     for (i = 0; i < recommendations.length; i++) {
         let anime = recommendations[i];
         let title = anime["title"]["userPreferred"];
-        rechtml += `<a href="./anime.html?anime=${title}"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime["meanScore"]} / 100</div><div class="dubb dubb2">${anime["format"]}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="./static/loading1.gif" data-src="${anime["coverImage"]["large"]}"> </div><div class="la-details"> <h3>${title}</h3> <div id="extra"> <span>${anime["status"]}</span> <span class="dot"></span> <span>EP ${anime["episodes"]}</span> </div></div></div></a>`;
+        rechtml += `<a href="./anime.html?anime_id=${title}"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime["meanScore"]} / 100</div><div class="dubb dubb2">${anime["format"]}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="./static/loading1.gif" data-src="${anime["coverImage"]["large"]}"> </div><div class="la-details"> <h3>${title}</h3> <div id="extra"> <span>${anime["status"]}</span> <span class="dot"></span> <span>EP ${anime["episodes"]}</span> </div></div></div></a>`;
     }
     document.getElementById("latest2").innerHTML = rechtml;
-    document.getElementsByClassName("sload")[0].style.display = 'none';
+    document.getElementsByClassName("sload")[0].style.display = "none";
     console.log("Anime Recommendations loaded");
     RefreshLazyLoader();
 }
 
 // Function to scroll episode slider
+const windowWidth = window.innerWidth;
+
 function plusSlides(n) {
     if (n === 1) {
-        document.getElementById("slider-carousel").scrollLeft += 600;
+        document.getElementById("slider-carousel").scrollLeft += windowWidth / 2;
     }
     else if (n === -1) {
-        document.getElementById("slider-carousel").scrollLeft -= 600;
+        document.getElementById("slider-carousel").scrollLeft -= windowWidth / 2;
     }
-}
-
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-
-if (urlParams.get("anime") == null) {
-    window.location = "./index.html";
 }
 
 //Running functions
 
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+
+const AnimeID = urlParams.get("anime_id");
+if (AnimeID == null) {
+    window.location = "./index.html";
+}
+
 async function loadData() {
     try {
-        let data = await getJson(animeapi + urlParams.get("anime"));
+        let data = await getJson(animeapi + AnimeID);
         data = data["results"];
 
         if (data.source == "gogoanime") {
-            loadAnimeFromGogo(data);
+            await loadAnimeFromGogo(data);
         } else if (data.source == "anilist") {
-            loadAnimeFromAnilist(data);
+            await loadAnimeFromAnilist(data);
         }
         RefreshLazyLoader();
     } catch (err) {
         document.getElementById("error-page").style.display = "block";
         document.getElementById("load").style.display = "none";
+        document.getElementById("main-content").style.display = "none";
         document.getElementById("error-desc").innerHTML = err;
         console.error(err);
     }

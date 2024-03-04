@@ -1978,3 +1978,7 @@ h2 {
 .ep-btn-playing {
     background-color: #eb001f;
 }
+
+* {
+    transition: opacity 0.5s ease;
+}
