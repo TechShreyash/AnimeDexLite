@@ -200,7 +200,7 @@ async function episodeSelectChange(elem) {
 
 // Function to get download links
 async function getDownloadLinks(anime, episode) {
-    const data = (await getJson(dlapi + anime + "-episode-" + episode))[
+    const data = (await getJson(dlapi + EpisodeID))[
         "results"
     ];
     let html = "";
