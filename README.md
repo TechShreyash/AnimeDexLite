@@ -32,7 +32,7 @@ To run AnimeDexLite on your local machine:
 ## 🚀 Deploy AnimeDexApi & Proxy (Recommended)
 For optimal performance, consider deploying the following components:
 
-- [AnimeDexApi](https://github.com/TechShreyash/CloudflareWorker/tree/main/animedexapi) : API to get all anime data.
+- [AnimeDexApi](https://github.com/TechShreyash/AnimeDexApi) : API to get all anime data.
 - [AnimeDexProxy](https://github.com/TechShreyash/CloudflareWorker/tree/main/animedexproxy) : Proxy to bypass CORS errors.
 
 ## 🔔 Join For Latest Updates
