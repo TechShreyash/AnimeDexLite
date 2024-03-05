@@ -84,7 +84,7 @@ async function SearchAnime(query, page = 1) {
             anime["subOrDub"] = "SUB";
         }
 
-        html += `<a href="./anime.html?anime=${anime["id"]
+        html += `<a href="./anime.html?anime_id=${anime["id"]
             }"><div class="poster la-anime"> <div id="shadow1" class="shadow"> <div class="dubb">${anime[
                 "subOrDub"
             ].toUpperCase()}</div></div><div id="shadow2" class="shadow"> <img class="lzy_img" src="./static/loading1.gif" data-src="${anime["img"]
