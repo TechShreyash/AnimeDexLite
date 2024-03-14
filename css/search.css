@@ -645,3 +645,21 @@ h2 {
     color: #721c24;
     text-decoration: underline;
 }
+
+#title1 {
+    width: 70%;
+    height: 86px
+}
+
+#title1 a {
+    height: 86px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 520px) {
+    #title1 img {
+        height: 55px;
+    }
+}

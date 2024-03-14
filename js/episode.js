@@ -57,19 +57,17 @@ function capitalizeFirstLetter(string) {
 
 // Function to get m3u8 url of episode
 async function loadVideo(name, stream) {
-    const episodeid =
-        urlParams.get("anime") + "-episode-" + urlParams.get("episode");
 
     try {
         document.getElementById("ep-name").innerHTML = name;
         const serversbtn = document.getElementById("serversbtn");
 
         let url = stream["sources"][0]["file"];
-        serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn sactive" onclick="selectServer(this)" data-value="./embed.html?url=${url}&id=${episodeid}">AD Free 1</a> </div>`;
+        serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn sactive" onclick="selectServer(this)" data-value="./embed.html?url=${url}&episode_id=${EpisodeID}">AD Free 1</a> </div>`;
         document.getElementsByClassName("sactive")[0].click();
 
         url = stream["sources_bk"][0]["file"];
-        serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="./embed.html?url=${url}&id=${episodeid}">AD Free 2</a> </div>`;
+        serversbtn.innerHTML += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="./embed.html?url=${url}&episode_id=${EpisodeID}">AD Free 2</a> </div>`;
 
         return true;
     } catch (err) {

@@ -49,7 +49,6 @@ footer a {
     background: linear-gradient(to right, #eb3349 40%, #f45c43);
     width: 100%;
     text-align: center;
-    padding-top: 25px;
     height: 86px;
     margin: auto;
     font-family: "Roboto", sans-serif;
@@ -480,8 +479,21 @@ h2 {
 }
 
 #title1 {
-    height: fit-content;
     width: 70%;
+    height: 86px
+}
+
+#title1 a {
+    height: 86px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 520px) {
+    #title1 img {
+        height: 55px;
+    }
 }
 
 .extra1 {
@@ -495,6 +507,8 @@ h2 {
 }
 
 @media only screen and (min-width: 580px) {
+
+
     #search-div input {
         width: calc(100% - 55px);
     }
@@ -504,7 +518,6 @@ h2 {
     }
 
     #title1 {
-        height: fit-content;
         width: 100%;
         text-align: center;
     }
@@ -558,7 +571,6 @@ h2 {
     }
 
     #title1 {
-        height: fit-content;
         width: calc(100% - 247px);
         text-align: center;
     }
@@ -576,7 +588,6 @@ h2 {
     }
 
     #title1 {
-        height: fit-content;
         width: calc(100% - 50px);
         text-align: center;
     }
@@ -999,4 +1010,7 @@ h2 {
 
 #sprite-plyr {
     display: none;
+}
+img{
+    transition: all 1s ease;
 }
