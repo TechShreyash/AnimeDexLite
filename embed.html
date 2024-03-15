@@ -80,6 +80,10 @@
         .plyr__time-skip.is-animated {
             animation: plyr__time-skip ease 1s forwards;
         }
+
+        :root {
+            --plyr-color-main: #eb001f;
+        }
     </style>
 
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
@@ -121,9 +125,7 @@
                 },
                 controls: [
                     "play-large",
-                    "rewind",
                     "play",
-                    "fast-forward",
                     "progress",
                     "current-time",
                     "duration",
