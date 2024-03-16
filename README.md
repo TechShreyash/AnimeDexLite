@@ -4,6 +4,11 @@
 
 AnimeDexLite is a pure HTML, CSS, and JS version of AnimeDex. It is lightweight, fast, ad-free, open-source, and easy to deploy. The design is responsive, and it uses Gogoanime and Anilist to get content. Powered by the blazing-fast [AnimeDexApi](https://api.anime-dex.workers.dev).
 
+
+<p align="center">
+<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FTechShreyash%2FAnimeDexLite&count_bg=%2379C83D&title_bg=%23555555&icon=github.svg&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
+</p>
+
 ## 🌐 Demo
 You can explore AnimeDexLite through the following URLs:
 
