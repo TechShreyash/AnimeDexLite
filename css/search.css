@@ -60,7 +60,6 @@ footer a {
     background: linear-gradient(to right, #eb3349 40%, #f45c43);
     width: 100%;
     text-align: center;
-    padding-top: 25px;
     height: 86px;
     margin: auto;
     font-family: "Roboto", sans-serif;
@@ -349,7 +348,6 @@ h2 {
 }
 
 #head-div {
-    padding-top: 25px;
     width: 100%;
 }
 
@@ -426,7 +424,6 @@ h2 {
     }
 
     #head-div {
-        padding-top: 25px;
         width: 100%;
     }
 
