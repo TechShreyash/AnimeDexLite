@@ -29,7 +29,9 @@ async function getJson(path, errCount = 0) {
     }
 
     try {
-        const response = await fetch(url);
+        const url = new URL(window.location.href)
+        const referer = url.hostname
+        const response = await fetch(url, { headers: { 'referer': referer } });
         return await response.json();
     } catch (errors) {
         console.error(errors);
