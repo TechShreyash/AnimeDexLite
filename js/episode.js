@@ -35,7 +35,7 @@ async function getJson(path, errCount = 0) {
 
     try {
         const _url_of_site = new URL(window.location.href)
-        const referer = _url_of_site.hostname
+        const referer = _url_of_site.origin
         const response = await fetch(url, { headers: { 'referer': referer } });
         return await response.json();
     } catch (errors) {
