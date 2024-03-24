@@ -35,10 +35,31 @@ To run AnimeDexLite on your local machine:
 - Open the `index.html` file in a browser
 
 ## 🚀 Deploy AnimeDexApi & Proxy (Recommended)
-For optimal performance, consider deploying the following components:
+
+### For optimal performance, consider deploying the following components:
 
 - [AnimeDexApi](https://github.com/TechShreyash/AnimeDexApi) : API to get all anime data.
 - [AnimeDexProxy](https://github.com/TechShreyash/CloudflareWorker/tree/main/animedexproxy) : Proxy to bypass CORS errors.
+
+<details>
+  <summary>Add your Api to your site</summary>
+
+> - Open [js folder](js), there is a AvailableServers variable at top of every js file
+> - By default it is like this `const AvailableServers = ['https://api1.anime-dex.workers.dev', 'https://api2.anime-dex.workers.dev', 'https://api3.anime-dex.workers.dev']`
+> - To add your api change it to `const AvailableServers = ['https://api.example.workers.dev']`
+> - Change this `https://api.example.workers.dev` to your api domain
+> - You can add multiple api domain too, just seperate it with commas
+</details>
+
+<details>
+  <summary>Add your Proxy to your site</summary>
+
+> - Open [js folder](js), there is a ProxyApi variable at top of every js file
+> - By default it is like this `const ProxyApi = "https://proxy.techzbots1.workers.dev/?u="`
+> - Change this `https://proxy.techzbots1.workers.dev` to your api domain
+> - You must include `/?u=` in the url
+</details>
+
 
 ## 🔔 Join For Latest Updates
 Stay informed about the latest updates by joining our channels / groups :
