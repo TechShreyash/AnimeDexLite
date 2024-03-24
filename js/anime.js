@@ -10,6 +10,10 @@ const AvailableServers = [
     "https://api1.anime-dex.workers.dev",
     "https://api2.anime-dex.workers.dev",
     "https://api3.anime-dex.workers.dev",
+    "https://api.techzbots1.workers.dev",
+    "https://api1.techzbots1.workers.dev",
+    "https://api2.techzbots1.workers.dev",
+    "https://api3.techzbots1.workers.dev",
 ];
 
 function getApiServer() {
@@ -33,9 +37,9 @@ async function getJson(path, errCount = 0) {
     }
 
     try {
-        const _url_of_site = new URL(window.location.href)
-        const referer = _url_of_site.origin
-        const response = await fetch(url, { headers: { 'referer': referer } });
+        const _url_of_site = new URL(window.location.href);
+        const referer = _url_of_site.origin;
+        const response = await fetch(url, { headers: { referer: referer } });
         return await response.json();
     } catch (errors) {
         console.error(errors);
@@ -310,8 +314,7 @@ const windowWidth = window.innerWidth;
 function plusSlides(n) {
     if (n === 1) {
         document.getElementById("slider-carousel").scrollLeft += windowWidth / 2;
-    }
-    else if (n === -1) {
+    } else if (n === -1) {
         document.getElementById("slider-carousel").scrollLeft -= windowWidth / 2;
     }
 }

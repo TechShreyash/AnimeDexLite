@@ -11,6 +11,10 @@ const AvailableServers = [
     "https://api1.anime-dex.workers.dev",
     "https://api2.anime-dex.workers.dev",
     "https://api3.anime-dex.workers.dev",
+    "https://api.techzbots1.workers.dev",
+    "https://api1.techzbots1.workers.dev",
+    "https://api2.techzbots1.workers.dev",
+    "https://api3.techzbots1.workers.dev",
 ];
 
 function getApiServer() {
@@ -34,9 +38,9 @@ async function getJson(path, errCount = 0) {
     }
 
     try {
-        const _url_of_site = new URL(window.location.href)
-        const referer = _url_of_site.origin
-        const response = await fetch(url, { headers: { 'referer': referer } });
+        const _url_of_site = new URL(window.location.href);
+        const referer = _url_of_site.origin;
+        const response = await fetch(url, { headers: { referer: referer } });
         return await response.json();
     } catch (errors) {
         console.error(errors);
@@ -59,7 +63,6 @@ function capitalizeFirstLetter(string) {
 
 // Function to get m3u8 url of episode
 async function loadVideo(name, stream) {
-
     try {
         document.getElementById("ep-name").innerHTML = name;
         const serversbtn = document.getElementById("serversbtn");
@@ -84,9 +87,9 @@ async function loadServers(servers, success = true) {
     html = "";
 
     for (let [key, value] of Object.entries(servers)) {
-        if (key != 'vidcdn') {
+        if (key != "vidcdn") {
             key = capitalizeFirstLetter(key);
-            if (key == 'Streamwish') {
+            if (key == "Streamwish") {
                 html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this,true)" data-value="${value}">${key}</a> </div>`;
             } else {
                 html += `<div class="sitem"> <a class="sobtn" onclick="selectServer(this)" data-value="${value}">${key}</a> </div>`;
@@ -106,7 +109,8 @@ function selectServer(btn, sandbox = false) {
     const iframe = document.getElementById("AnimeDexFrame");
 
     if (sandbox == true) {
-        iframe.sandbox = "allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation";
+        iframe.sandbox =
+            "allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation";
     } else {
         iframe.removeAttribute("sandbox");
     }
@@ -134,20 +138,20 @@ function showDownload() {
 let Episode_List = [];
 
 async function getEpUpperList(eplist) {
-    const current_ep = Number(EpisodeID.split('-episode-')[1].replace('-', '.'));
+    const current_ep = Number(EpisodeID.split("-episode-")[1].replace("-", "."));
     Episode_List = eplist;
     const TotalEp = eplist.length;
     let html = "";
 
     for (let i = 0; i < eplist.length; i++) {
-        const epnum = Number(eplist[i][0].replaceAll('-', '.'));
+        const epnum = Number(eplist[i][0].replaceAll("-", "."));
 
-        if (((epnum - 1) % 100) === 0) {
+        if ((epnum - 1) % 100 === 0) {
             let epUpperBtnText;
-            if ((TotalEp - epnum) < 100) {
+            if (TotalEp - epnum < 100) {
                 epUpperBtnText = `${epnum} - ${TotalEp}`;
 
-                if ((epnum <= current_ep) && (current_ep <= TotalEp)) {
+                if (epnum <= current_ep && current_ep <= TotalEp) {
                     html += `<option id="default-ep-option" class="ep-btn" data-from=${epnum} data-to=${TotalEp}>${epUpperBtnText}</option>`;
                     getEpLowerList(epnum, TotalEp);
                 } else {
@@ -156,53 +160,56 @@ async function getEpUpperList(eplist) {
             } else {
                 epUpperBtnText = `${epnum} - ${epnum + 99}`;
 
-                if ((epnum <= current_ep) && (current_ep <= (epnum + 99))) {
-                    html += `<option id="default-ep-option" class="ep-btn" data-from=${epnum} data-to=${(epnum + 99)}>${epUpperBtnText}</option>`;
-                    getEpLowerList(epnum, (epnum + 99));
+                if (epnum <= current_ep && current_ep <= epnum + 99) {
+                    html += `<option id="default-ep-option" class="ep-btn" data-from=${epnum} data-to=${epnum + 99
+                        }>${epUpperBtnText}</option>`;
+                    getEpLowerList(epnum, epnum + 99);
                 } else {
-                    html += `<option class="ep-btn" data-from=${epnum} data-to=${(epnum + 99)}>${epUpperBtnText}</option>`;
+                    html += `<option class="ep-btn" data-from=${epnum} data-to=${epnum + 99
+                        }>${epUpperBtnText}</option>`;
                 }
             }
         }
     }
-    document.getElementById('ep-upper-div').innerHTML = html;
-    document.getElementById('default-ep-option').selected = true;
+    document.getElementById("ep-upper-div").innerHTML = html;
+    document.getElementById("default-ep-option").selected = true;
     console.log("Episode list loaded");
 }
 
 async function getEpLowerList(start, end) {
-    const current_ep = Number(EpisodeID.split('-episode-')[1].replace('-', '.'));
+    const current_ep = Number(EpisodeID.split("-episode-")[1].replace("-", "."));
 
     let html = "";
     const eplist = Episode_List.slice(start - 1, end);
 
     for (let i = 0; i < eplist.length; i++) {
         const episode_id = eplist[i][1];
-        let epnum = Number(eplist[i][0].replaceAll('-', '.'));
+        let epnum = Number(eplist[i][0].replaceAll("-", "."));
 
         let epLowerBtnText;
         epLowerBtnText = `${epnum}`;
 
         if (epnum === current_ep) {
-            epnum = String(epnum).replaceAll('.', '-');
+            epnum = String(epnum).replaceAll(".", "-");
             html += `<a class="ep-btn-playing ep-btn" href="./episode.html?anime_id=${AnimeID}&episode_id=${episode_id}">${epLowerBtnText}</a>`;
         } else {
             html += `<a class="ep-btn" href="./episode.html?anime_id=${AnimeID}&episode_id=${episode_id}">${epLowerBtnText}</a>`;
         }
     }
-    document.getElementById('ep-lower-div').innerHTML = html;
+    document.getElementById("ep-lower-div").innerHTML = html;
 }
 
 async function episodeSelectChange(elem) {
     const option = elem.options[elem.selectedIndex];
-    getEpLowerList(parseInt(option.getAttribute('data-from')), parseInt(option.getAttribute('data-to')))
+    getEpLowerList(
+        parseInt(option.getAttribute("data-from")),
+        parseInt(option.getAttribute("data-to"))
+    );
 }
 
 // Function to get download links
 async function getDownloadLinks(anime, episode) {
-    const data = (await getJson(dlapi + EpisodeID))[
-        "results"
-    ];
+    const data = (await getJson(dlapi + EpisodeID))["results"];
     let html = "";
 
     for (const [key, value] of Object.entries(data)) {
@@ -214,15 +221,13 @@ async function getDownloadLinks(anime, episode) {
 }
 
 function isShortNumber(n) {
-    let x = Number(String(n).replace('.', ''))
+    let x = Number(String(n).replace(".", ""));
 
     if (x < 20) {
-        return true
+        return true;
+    } else {
+        return false;
     }
-    else {
-        return false
-    }
-
 }
 
 // Function to get episode Slider
@@ -230,21 +235,18 @@ async function getEpSlider(total) {
     let ephtml = "";
 
     for (let i = 0; i < total.length; i++) {
-        const episodeId = total[i][1]
-        const epNum = total[i][0]
+        const episodeId = total[i][1];
+        const epNum = total[i][0];
         if (episodeId == EpisodeID) {
             if (isShortNumber(epNum)) {
                 ephtml += `<div class="ep-slide ep-slider-playing"><a href="./episode.html?anime_id=${AnimeID}&episode_id=${episodeId}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum} - Playing</span></div></a></div>`;
-            }
-            else {
+            } else {
                 ephtml += `<div class="ep-slide ep-slider-playing"><a href="./episode.html?anime_id=${AnimeID}&episode_id=${episodeId}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Ep ${epNum} - Playing</span></div></a></div>`;
             }
-        }
-        else {
+        } else {
             if (isShortNumber(epNum)) {
                 ephtml += `<div class=ep-slide><a href="./episode.html?anime_id=${AnimeID}&episode_id=${episodeId}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></a></div>`;
-            }
-            else {
+            } else {
                 ephtml += `<div class=ep-slide><a href="./episode.html?anime_id=${AnimeID}&episode_id=${episodeId}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Ep ${epNum}</span></div></a></div>`;
             }
         }
@@ -254,9 +256,13 @@ async function getEpSlider(total) {
     RefreshLazyLoader();
 
     // Scroll to playing episode
-    document.getElementById('main-section').style.display = "block";
-    document.getElementsByClassName("ep-slider-playing")[0].scrollIntoView({ behavior: "instant", inline: "start", block: 'end' });
-    document.getElementsByClassName("ep-btn-playing")[0].scrollIntoView({ behavior: "instant", inline: "start", block: 'end' });
+    document.getElementById("main-section").style.display = "block";
+    document
+        .getElementsByClassName("ep-slider-playing")[0]
+        .scrollIntoView({ behavior: "instant", inline: "start", block: "end" });
+    document
+        .getElementsByClassName("ep-btn-playing")[0]
+        .scrollIntoView({ behavior: "instant", inline: "start", block: "end" });
     window.scrollTo({
         top: 0,
         left: 0,
@@ -264,21 +270,19 @@ async function getEpSlider(total) {
     });
 
     setTimeout(() => {
-        document.getElementById('main-section').style.opacity = 1;
-        document.getElementById('load').style.display = "none";
+        document.getElementById("main-section").style.opacity = 1;
+        document.getElementById("load").style.display = "none";
     }, 100);
-
 }
 
 // Retry image load
 function retryImageLoad(img) {
-    const ImageUrl = img.src
+    const ImageUrl = img.src;
     img.src = "./static/loading1.gif";
 
     // load after 3 second
 
     setTimeout(() => {
-
         if (ImageUrl.includes("?t=")) {
             const t = Number(ImageUrl.split("?t=")[1]) + 1;
 
@@ -286,15 +290,11 @@ function retryImageLoad(img) {
             if (t < 5) {
                 img.src = ImageUrl.split("?t=")[0] + "?t=" + String(t);
             }
-        }
-        else {
+        } else {
             img.src = ImageUrl + "?t=1";
         }
-
     }, 3000);
-
 }
-
 
 // Function to scroll episode slider
 const windowWidth = window.innerWidth;
@@ -302,8 +302,7 @@ const windowWidth = window.innerWidth;
 function plusSlides(n) {
     if (n === 1) {
         document.getElementById("slider-carousel").scrollLeft += windowWidth / 2;
-    }
-    else if (n === -1) {
+    } else if (n === -1) {
         document.getElementById("slider-carousel").scrollLeft -= windowWidth / 2;
     }
 }
@@ -323,7 +322,6 @@ async function RefreshLazyLoader() {
     });
 }
 
-
 // Running functions
 
 const queryString = window.location.search;
@@ -334,7 +332,6 @@ const EpisodeID = urlParams.get("episode_id");
 if (AnimeID == null || EpisodeID == null) {
     window.location = "./index.html";
 }
-
 
 async function loadEpisodeData(data) {
     data = data["results"];
@@ -364,22 +361,18 @@ async function loadEpisodeData(data) {
 
 async function loadData() {
     try {
-        let data = await getJson(
-            episodeapi +
-            EpisodeID
-        );
+        let data = await getJson(episodeapi + EpisodeID);
 
-        await loadEpisodeData(data)
+        await loadEpisodeData(data);
 
         const eplist = (await getJson(animeapi + AnimeID))["results"]["episodes"];
-        getEpUpperList(eplist)
+        getEpUpperList(eplist);
         console.log("Episode list loaded");
 
         try {
-            await getEpSlider(eplist, urlParams.get("episode"))
-        }
-        catch {
-            document.getElementById('main-section').style.display = "block";
+            await getEpSlider(eplist, urlParams.get("episode"));
+        } catch {
+            document.getElementById("main-section").style.display = "block";
             window.scrollTo({
                 top: 0,
                 left: 0,
@@ -387,8 +380,8 @@ async function loadData() {
             });
 
             setTimeout(() => {
-                document.getElementById('main-section').style.opacity = 1;
-                document.getElementById('load').style.display = "none";
+                document.getElementById("main-section").style.opacity = 1;
+                document.getElementById("load").style.display = "none";
             }, 100);
         }
         console.log("Episode Slider loaded");
@@ -398,7 +391,7 @@ async function loadData() {
         document.getElementById("error-desc").innerHTML = err;
         console.error(err);
     }
-    document.getElementById('AnimeDexFrame').focus()
+    document.getElementById("AnimeDexFrame").focus();
 }
 
 loadData();
