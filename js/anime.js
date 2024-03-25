@@ -181,7 +181,7 @@ async function getEpSlider(total) {
             const episodeId = total[i][1];
             const epNum = total[i][0].replaceAll("-", ".");
             if (Number(epNum) > 0) {
-                ephtml += `<div class=ep-slide><a href="./episode.html?anime_id=${AnimeID}&episode_id=${episodeId}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.anime-dex.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></a></div>`;
+                ephtml += `<div class=ep-slide><a href="./episode.html?anime_id=${AnimeID}&episode_id=${episodeId}"><img onerror="retryImageLoad(this)" class="lzy_img" src="./static/loading1.gif" data-src=https://thumb.techzbots1.workers.dev/thumb/${episodeId}><div class=ep-title><span>Episode ${epNum}</span></div></a></div>`;
             }
         }
         document.getElementById("ep-slider").innerHTML = ephtml;
