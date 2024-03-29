@@ -7,7 +7,7 @@ const dlapi = "/download/";
 
 // Api Server Manager
 
-const AvailableServers = ["https://api13.anime-dex.workers.dev"];
+const AvailableServers = ["https://api100.anime-dex.workers.dev"];
 
 function getApiServer() {
     return AvailableServers[Math.floor(Math.random() * AvailableServers.length)];
