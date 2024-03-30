@@ -111,17 +111,29 @@ async function loadAnimeFromGogo(data) {
         document.getElementById("poster-img").style.display = "block";
     }, 100);
 
-    document.getElementById("watch-btn").href =
-        "./episode.html?anime_id=" +
-        AnimeID +
-        "&episode_id=" +
-        data["episodes"][0][1];
+    const episodes = data["episodes"]
 
-    console.log("Anime Info loaded");
-    RefreshLazyLoader();
+    if (episodes.length == 0) {
+        const ephtml = '<a id="no-ep-found" class="ep-btn">No Episodes Found</a>';
+        document.getElementById("ep-lower-div").innerHTML = ephtml;
+        document.getElementById("ep-divo-outer").style.display = "block";
+        document.getElementById("ep-upper-div").style.display = "none";
+        document.getElementById('ep-lower-div').style.gridTemplateColumns = "unset";
+        document.getElementById('no-ep-found').style.width = "100%";
+    }
+    else {
+        document.getElementById("watch-btn").href =
+            "./episode.html?anime_id=" +
+            AnimeID +
+            "&episode_id=" +
+            data["episodes"][0][1];
 
-    getEpSlider(data["episodes"]);
-    getEpList(data["episodes"]);
+        console.log("Anime Info loaded");
+        RefreshLazyLoader();
+
+        getEpSlider(data["episodes"]);
+        getEpList(data["episodes"]);
+    }
     getRecommendations(data["name"]);
 }
 
