@@ -9,8 +9,10 @@ Thank you for your understanding and support during the project's active phase! 
 ### Project Links :
 
 <p>Telegram Support Group : <a href=https://telegram.me/TechZBots_Support>@TechZBots_Support</a>
-<p>AnimeDexLite Repository : <a href=https://github.com/TechShreyash/AnimeDexLite>TechShreyash/AnimeDexLite</a><p>AnimeDex Api Repository : <a href=https://github.com/TechShreyash/CloudflareWorker/tree/main/animedexproxy>TechShreyash/animedexproxy</a>
-<p>AnimeDex Proxy Repository : <a href=https://github.com/TechShreyash/AnimeDexApi>TechShreyash/AnimeDexApi</a><p>ThumbGen Api Repository : <a href=https://github.com/TechShreyash/ThumbApi>TechShreyash/ThumbApi</a>
+<p>AnimeDexLite Repository : <a href=https://github.com/TechShreyash/AnimeDexLite>TechShreyash/AnimeDexLite</a>
+<p>AnimeDex Api Repository : <a href=https://github.com/TechShreyash/AnimeDexApi>TechShreyash/AnimeDexApi</a>
+<p>AnimeDex Proxy Repository : <a href=https://github.com/TechShreyash/CloudflareWorker/tree/main/animedexproxy>TechShreyash/animedexproxy</a>
+<p>ThumbGen Api Repository : <a href=https://github.com/TechShreyash/ThumbApi>TechShreyash/ThumbApi</a>
 <p>Stats Api Repository : <a href=https://github.com/TechShreyash/StatsApi>TechShreyash/StatsApi</a>
 
 [![image](https://github.com/TechShreyash/AnimeDexLite/assets/82265247/98c27bb6-c4a8-4224-983e-2bb21386032a)](https://animedex.pages.dev)
